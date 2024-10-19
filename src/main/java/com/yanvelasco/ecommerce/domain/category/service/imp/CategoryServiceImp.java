@@ -6,9 +6,9 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
+import com.yanvelasco.ecommerce.domain.category.exceptions.ResourceNotFoundException;
 import com.yanvelasco.ecommerce.domain.category.repository.CategoryRepository;
 import com.yanvelasco.ecommerce.domain.category.service.CategoryService;
 
@@ -36,7 +36,7 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public ResponseEntity<Object> deleteCategory(UUID id) {
         var categoryToDelete = categoryRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found")
+                () -> new ResourceNotFoundException("Category", "id", id)
         );
         categoryRepository.delete(categoryToDelete);
         return ResponseEntity.noContent().build();
@@ -45,11 +45,8 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public ResponseEntity<CategoryEntity> updateCategory(UUID id, CategoryEntity category) {
         var categoryToUpdate = categoryRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found")
+                () -> new ResourceNotFoundException("Category", "id", id)
         );
-        if (category.getName() == null || category.getName().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category name is required");
-        }
         categoryToUpdate.setName(category.getName());
         categoryRepository.save(categoryToUpdate);
         return ResponseEntity.ok(categoryToUpdate);

@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,5 +29,6 @@ public class CategoryEntity {
     private UUID id;
 
     @NotBlank(message = "Category name is required")
+    @Size(min = 3, max = 50, message = "Category name must be between 3 and 50 characters")
     private String name;
 }

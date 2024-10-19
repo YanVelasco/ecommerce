@@ -1,16 +1,18 @@
 package com.yanvelasco.ecommerce.domain.category.service.imp;
 
-import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
-import com.yanvelasco.ecommerce.domain.category.repository.CategoryRepository;
-import com.yanvelasco.ecommerce.domain.category.service.CategoryService;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.UUID;
+import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
+import com.yanvelasco.ecommerce.domain.category.repository.CategoryRepository;
+import com.yanvelasco.ecommerce.domain.category.service.CategoryService;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,7 @@ public class CategoryServiceImp implements CategoryService {
         return ResponseEntity.ok(categories);
     }
 
+    @Override
     public ResponseEntity<CategoryEntity> addCategory(CategoryEntity category) {
         if (category.getName() == null || category.getName().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category name is required");
@@ -33,6 +36,7 @@ public class CategoryServiceImp implements CategoryService {
         return ResponseEntity.status(HttpStatus.CREATED).body(category);
     }
 
+    @Override
     public ResponseEntity<Object> deleteCategory(UUID id) {
         var categoryToDelete = categoryRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found")
@@ -41,6 +45,7 @@ public class CategoryServiceImp implements CategoryService {
         return ResponseEntity.noContent().build();
     }
 
+    @Override
     public ResponseEntity<CategoryEntity> updateCategory(UUID id, CategoryEntity category) {
         var categoryToUpdate = categoryRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found")

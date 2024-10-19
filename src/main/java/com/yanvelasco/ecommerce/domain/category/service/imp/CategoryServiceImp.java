@@ -1,38 +1,56 @@
-package com.yanvelasco.ecommerce.domain.category.service;
+package com.yanvelasco.ecommerce.domain.category.service.imp;
 
 import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
+import com.yanvelasco.ecommerce.domain.category.repository.CategoryRepository;
+import com.yanvelasco.ecommerce.domain.category.service.CategoryService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
-public class CategoryServiceImp {
+@RequiredArgsConstructor
+public class CategoryServiceImp implements CategoryService {
 
-    private final List<CategoryEntity> categories = new ArrayList<>();
+    private final CategoryRepository categoryRepository;
 
-    public List<CategoryEntity> getCategories() {
-        return categories;
+
+    @Override
+    public ResponseEntity<List<CategoryEntity>> getCategories() {
+        var categories = categoryRepository.findAll();
+        return ResponseEntity.ok(categories);
     }
 
-    public List<CategoryEntity> addCategory(CategoryEntity category) {
-        categories.add(category);
-        return categories;
-    }
-
-    public List<CategoryEntity> deleteCategory(UUID id) {
-        categories.removeIf(c -> c.getId().equals(id));
-        return categories;
-    }
-
-    public List<CategoryEntity> updateCategory(CategoryEntity category) {
-        for (CategoryEntity c : categories) {
-            if (c.getId().equals(category.getId())) {
-                c.setName(category.getName());
-            }
+    public ResponseEntity<CategoryEntity> addCategory(CategoryEntity category) {
+        if (category.getName() == null || category.getName().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category name is required");
         }
-        return categories;
+        categoryRepository.save(category);
+        return ResponseEntity.status(HttpStatus.CREATED).body(category);
+    }
+
+    public ResponseEntity<Object> deleteCategory(UUID id) {
+        var categoryToDelete = categoryRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found")
+        );
+        categoryRepository.delete(categoryToDelete);
+        return ResponseEntity.noContent().build();
+    }
+
+    public ResponseEntity<CategoryEntity> updateCategory(UUID id, CategoryEntity category) {
+        var categoryToUpdate = categoryRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found")
+        );
+        if (category.getName() == null || category.getName().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category name is required");
+        }
+        categoryToUpdate.setName(category.getName());
+        categoryRepository.save(categoryToUpdate);
+        return ResponseEntity.ok(categoryToUpdate);
     }
 
 }

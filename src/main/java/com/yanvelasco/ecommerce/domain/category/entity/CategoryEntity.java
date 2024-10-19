@@ -1,24 +1,22 @@
 package com.yanvelasco.ecommerce.domain.category.entity;
 
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.util.UUID;
 
-public class Category {
+@Entity
+@Table(name = "categories")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class CategoryEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Setter(AccessLevel.NONE)
     private UUID id;
+
     private String name;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

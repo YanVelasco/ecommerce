@@ -29,9 +29,6 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public ResponseEntity<CategoryEntity> addCategory(CategoryEntity category) {
-        if (category.getName() == null || category.getName().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category name is required");
-        }
         categoryRepository.save(category);
         return ResponseEntity.status(HttpStatus.CREATED).body(category);
     }

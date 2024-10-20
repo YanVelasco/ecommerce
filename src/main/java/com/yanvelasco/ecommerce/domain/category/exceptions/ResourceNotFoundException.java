@@ -1,9 +1,12 @@
 package  com.yanvelasco.ecommerce.domain.category.exceptions;
 
 import java.util.UUID;
+import lombok.Getter;
 
+
+@Getter
 public class ResourceNotFoundException extends RuntimeException {
-    private String rsourcename;
+    private  String rsourcename;
     private String fieldname;
     private String field;
     private UUID fieldId;

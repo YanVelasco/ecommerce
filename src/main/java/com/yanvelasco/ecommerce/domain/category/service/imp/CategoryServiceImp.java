@@ -24,10 +24,10 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public ResponseEntity<List<CategoryEntity>> getCategories() {
-        if (categoryRepository.findAll().isEmpty()) {
+        var categories = categoryRepository.findAll();
+        if (categories.isEmpty()) {
             throw new EmpytException("No categories found");
         }
-        var categories = categoryRepository.findAll();
         return ResponseEntity.ok(categories);
     }
 

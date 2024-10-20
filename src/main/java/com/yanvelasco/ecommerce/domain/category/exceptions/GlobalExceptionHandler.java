@@ -37,4 +37,11 @@ public class GlobalExceptionHandler {
         String message = e.getMessage();
         return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
     }
+
+    @ExceptionHandler(EmpytException.class)
+    public ResponseEntity<String> emptyException(EmpytException e) {
+        String message = e.getMessage();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
+    
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
 import com.yanvelasco.ecommerce.domain.category.exceptions.AlreadyExistsException;
+import com.yanvelasco.ecommerce.domain.category.exceptions.EmpytException;
 import com.yanvelasco.ecommerce.domain.category.exceptions.ResourceNotFoundException;
 import com.yanvelasco.ecommerce.domain.category.repository.CategoryRepository;
 import com.yanvelasco.ecommerce.domain.category.service.CategoryService;
@@ -23,6 +24,9 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public ResponseEntity<List<CategoryEntity>> getCategories() {
+        if (categoryRepository.findAll().isEmpty()) {
+            throw new EmpytException("No categories found");
+        }
         var categories = categoryRepository.findAll();
         return ResponseEntity.ok(categories);
     }

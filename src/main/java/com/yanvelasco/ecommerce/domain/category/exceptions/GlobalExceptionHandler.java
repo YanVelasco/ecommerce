@@ -32,4 +32,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
     }
 
+    @ExceptionHandler(AlreadyExistsException.class)
+    public ResponseEntity<String> alreadyExists(AlreadyExistsException e) {
+        String message = e.getMessage();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
+    }
 }

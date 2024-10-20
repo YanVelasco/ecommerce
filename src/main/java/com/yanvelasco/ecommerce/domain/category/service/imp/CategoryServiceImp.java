@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
+import com.yanvelasco.ecommerce.domain.category.exceptions.AlreadyExistsException;
 import com.yanvelasco.ecommerce.domain.category.exceptions.ResourceNotFoundException;
 import com.yanvelasco.ecommerce.domain.category.repository.CategoryRepository;
 import com.yanvelasco.ecommerce.domain.category.service.CategoryService;
@@ -20,7 +21,6 @@ public class CategoryServiceImp implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-
     @Override
     public ResponseEntity<List<CategoryEntity>> getCategories() {
         var categories = categoryRepository.findAll();
@@ -29,8 +29,11 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public ResponseEntity<CategoryEntity> addCategory(CategoryEntity category) {
-        categoryRepository.save(category);
-        return ResponseEntity.status(HttpStatus.CREATED).body(category);
+        if (categoryRepository.findByName(category.getName()).isPresent()) {
+            throw new AlreadyExistsException("Category already exists");
+        }
+        var newCategory = categoryRepository.save(category);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newCategory);
     }
 
     @Override
@@ -44,9 +47,15 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public ResponseEntity<CategoryEntity> updateCategory(UUID id, CategoryEntity category) {
-        var categoryToUpdate = categoryRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Category", "id", id)
-        );
+        var categoryToUpdate = categoryRepository.findById(id)
+            .filter(cat -> categoryRepository.findByName(category.getName()).isEmpty())
+            .orElseThrow(() -> {
+                if (categoryRepository.findByName(category.getName()).isPresent()) {
+                    throw new AlreadyExistsException("Category already exists");
+                } else {
+                    throw new ResourceNotFoundException("Category", "id", id);
+                }
+            });
         categoryToUpdate.setName(category.getName());
         categoryRepository.save(categoryToUpdate);
         return ResponseEntity.ok(categoryToUpdate);

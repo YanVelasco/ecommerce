@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
+import com.yanvelasco.ecommerce.domain.category.dto.CategoryRequestDTO;
+import com.yanvelasco.ecommerce.domain.category.dto.CategoryResponseDTO;
 import com.yanvelasco.ecommerce.domain.category.service.CategoryService;
 
 import jakarta.validation.Valid;
@@ -27,13 +28,12 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<CategoryEntity>> getCategories() {
+    public ResponseEntity<List<CategoryResponseDTO>> getCategories() {
         return categoryService.getCategories();
     }
 
-
     @PostMapping("/add")
-    public ResponseEntity<CategoryEntity> addCategory(@Valid @RequestBody CategoryEntity category) {
+    public ResponseEntity<CategoryResponseDTO> addCategory(@Valid @RequestBody CategoryRequestDTO category) {
         return categoryService.addCategory(category);
     }
 
@@ -43,7 +43,7 @@ public class CategoryController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<CategoryEntity> updateCategory(@PathVariable UUID id, @RequestBody CategoryEntity category) {
+    public ResponseEntity<CategoryResponseDTO> updateCategory(@PathVariable UUID id, @RequestBody CategoryRequestDTO category) {
         return categoryService.updateCategory(id, category);
     }
 

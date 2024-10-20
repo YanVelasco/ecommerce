@@ -22,6 +22,7 @@ public class CategoryMapper {
     @PostConstruct
     public void configureModelMapper() {
         Converter<CategoryEntity, CategoryResponseDTO> toResponseDTOConverter = new Converter<>() {
+            @Override
             public CategoryResponseDTO convert(MappingContext<CategoryEntity, CategoryResponseDTO> context) {
                 CategoryEntity source = context.getSource();
                 return new CategoryResponseDTO(source.getId(), source.getName());

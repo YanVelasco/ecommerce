@@ -38,23 +38,11 @@ public class CategoryServiceImp implements CategoryService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<CategoryEntity> categoriesPage = categoryRepository.findAll(pageable);
 
-        var categories = categoriesPage.getContent();
-        if (categories.isEmpty()) {
-            throw new EmpytException("Categories not found");
+        if (categoriesPage.isEmpty()) {
+            throw new EmpytException("No categories found");
         }
 
-        List<CategoryResponseDTO> categoryResponseDTOs = categories.stream()
-                .map(categoryMapper::toResponseDTO)
-                .collect(Collectors.toList());
-
-        PagedCategoryResponseDTO response = new PagedCategoryResponseDTO(
-                categoryResponseDTOs,
-                categoriesPage.getNumber(),
-                categoriesPage.getSize(),
-                categoriesPage.getTotalElements(),
-                categoriesPage.getTotalPages(),
-                categoriesPage.isLast()
-        );
+        PagedCategoryResponseDTO response = categoryMapper.toPagedCategoryResponseDTO(categoriesPage);
 
         return ResponseEntity.ok(response);
     }

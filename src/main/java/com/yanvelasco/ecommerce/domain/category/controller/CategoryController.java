@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yanvelasco.ecommerce.domain.category.config.AppConstants;
 import com.yanvelasco.ecommerce.domain.category.dto.CategoryRequestDTO;
 import com.yanvelasco.ecommerce.domain.category.dto.CategoryResponseDTO;
 import com.yanvelasco.ecommerce.domain.category.dto.PagedCategoryResponseDTO;
@@ -30,8 +31,8 @@ public class CategoryController {
 
     @GetMapping("/public/categories")
     public ResponseEntity<PagedCategoryResponseDTO> getCategories(
-        @RequestParam(name = "pageNumber") int pageNumber,
-        @RequestParam(name = "pageSize") int pageSize
+        @RequestParam(name = "pageNumber", defaultValue=AppConstants.PAGE_NUMBER, required = false) int pageNumber,
+        @RequestParam(name = "pageSize", defaultValue=AppConstants.PAGE_SIZE, required = false) int pageSize
     ) {
         return categoryService.getCategories(pageNumber, pageSize);
     }

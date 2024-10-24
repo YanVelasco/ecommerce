@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.yanvelasco.ecommerce.domain.category.dto.CategoryRequestDTO;
 import com.yanvelasco.ecommerce.domain.category.dto.CategoryResponseDTO;
+import com.yanvelasco.ecommerce.domain.category.dto.PagedCategoryResponseDTO;
+import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
 import com.yanvelasco.ecommerce.domain.category.exceptions.AlreadyExistsException;
 import com.yanvelasco.ecommerce.domain.category.exceptions.EmpytException;
 import com.yanvelasco.ecommerce.domain.category.exceptions.ResourceNotFoundException;
@@ -29,12 +34,29 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public ResponseEntity<List<CategoryResponseDTO>> getCategories() {
-        var categories = categoryRepository.findAll();
+    public ResponseEntity<PagedCategoryResponseDTO> getCategories(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<CategoryEntity> categoriesPage = categoryRepository.findAll(pageable);
+
+        var categories = categoriesPage.getContent();
         if (categories.isEmpty()) {
-            throw new EmpytException("No categories found");
+            throw new EmpytException("Categories not found");
         }
-        return ResponseEntity.ok(categories.stream().map(categoryMapper::toResponseDTO).collect(Collectors.toList()));
+
+        List<CategoryResponseDTO> categoryResponseDTOs = categories.stream()
+                .map(categoryMapper::toResponseDTO)
+                .collect(Collectors.toList());
+
+        PagedCategoryResponseDTO response = new PagedCategoryResponseDTO(
+                categoryResponseDTOs,
+                categoriesPage.getNumber(),
+                categoriesPage.getSize(),
+                categoriesPage.getTotalElements(),
+                categoriesPage.getTotalPages(),
+                categoriesPage.isLast()
+        );
+
+        return ResponseEntity.ok(response);
     }
 
     @Override

@@ -12,7 +12,6 @@ import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
-
 @Component
 @RequiredArgsConstructor
 public class CategoryMapper {
@@ -25,7 +24,10 @@ public class CategoryMapper {
             @Override
             public CategoryResponseDTO convert(MappingContext<CategoryEntity, CategoryResponseDTO> context) {
                 CategoryEntity source = context.getSource();
-                return new CategoryResponseDTO(source.getId(), source.getName());
+                return new CategoryResponseDTO(
+                    source.getId(),
+                    source.getName()
+                );
             }
         };
 

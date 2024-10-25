@@ -1,12 +1,11 @@
 package com.yanvelasco.ecommerce.domain.category.service.imp;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,8 +33,13 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public ResponseEntity<PagedCategoryResponseDTO> getCategories(Integer pageNumber, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+    public ResponseEntity<PagedCategoryResponseDTO> getCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+
+        Sort sortByAndOrderBy = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sortByAndOrderBy);
         Page<CategoryEntity> categoriesPage = categoryRepository.findAll(pageable);
 
         if (categoriesPage.isEmpty()) {
@@ -71,7 +75,7 @@ public class CategoryServiceImp implements CategoryService {
     @Transactional
     public ResponseEntity<CategoryResponseDTO> updateCategory(UUID id, CategoryRequestDTO category) {
         var categoryToUpdate = categoryRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
 
         if (category.name() != null && !category.name().isEmpty()) {
             if (categoryRepository.findByName(category.name()).isPresent()) {

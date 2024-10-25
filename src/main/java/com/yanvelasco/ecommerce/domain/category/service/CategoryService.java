@@ -9,7 +9,7 @@ import com.yanvelasco.ecommerce.domain.category.dto.CategoryResponseDTO;
 import com.yanvelasco.ecommerce.domain.category.dto.PagedCategoryResponseDTO;
 
 public interface CategoryService {
-    ResponseEntity<PagedCategoryResponseDTO> getCategories(Integer pageNumber, Integer pageSize);   
+    ResponseEntity<PagedCategoryResponseDTO> getCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);   
      ResponseEntity<CategoryResponseDTO> addCategory(CategoryRequestDTO category);
     ResponseEntity<Object> deleteCategory(UUID id);
     ResponseEntity<CategoryResponseDTO> updateCategory(UUID id, CategoryRequestDTO category);

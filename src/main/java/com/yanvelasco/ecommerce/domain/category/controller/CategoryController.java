@@ -32,9 +32,11 @@ public class CategoryController {
     @GetMapping("/public/categories")
     public ResponseEntity<PagedCategoryResponseDTO> getCategories(
         @RequestParam(name = "pageNumber", defaultValue=AppConstants.PAGE_NUMBER, required = false) int pageNumber,
-        @RequestParam(name = "pageSize", defaultValue=AppConstants.PAGE_SIZE, required = false) int pageSize
+        @RequestParam(name = "pageSize", defaultValue=AppConstants.PAGE_SIZE, required = false) int pageSize,
+        @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+        @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_ORDER, required = false) String sortOrder
     ) {
-        return categoryService.getCategories(pageNumber, pageSize);
+        return categoryService.getCategories(pageNumber, pageSize, sortBy, sortOrder);
     }
 
     @PostMapping("/public/categories")

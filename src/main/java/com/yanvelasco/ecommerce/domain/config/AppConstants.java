@@ -1,4 +1,4 @@
-package com.yanvelasco.ecommerce.domain.category.config;
+package com.yanvelasco.ecommerce.domain.config;
 
 public class AppConstants {
     public static final String PAGE_NUMBER="0";

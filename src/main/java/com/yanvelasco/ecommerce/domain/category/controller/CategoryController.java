@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yanvelasco.ecommerce.domain.category.config.AppConstants;
 import com.yanvelasco.ecommerce.domain.category.dto.CategoryRequestDTO;
 import com.yanvelasco.ecommerce.domain.category.dto.CategoryResponseDTO;
 import com.yanvelasco.ecommerce.domain.category.dto.PagedCategoryResponseDTO;
 import com.yanvelasco.ecommerce.domain.category.service.CategoryService;
+import com.yanvelasco.ecommerce.domain.config.AppConstants;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

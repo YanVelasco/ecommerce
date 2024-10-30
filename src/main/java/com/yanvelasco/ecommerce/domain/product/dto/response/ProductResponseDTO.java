@@ -1,13 +1,15 @@
 package com.yanvelasco.ecommerce.domain.product.dto.response;
 
+import java.util.UUID;
+
 public record ProductResponseDTO(
-    Long id,
+    UUID id,
     String productName,
     String productDescription,
     Integer productQuantity,
     Double productPrice,
     Double specialPrice,
     String productImage,
-    Long categoryId
+    UUID categoryId
 ) {
 }

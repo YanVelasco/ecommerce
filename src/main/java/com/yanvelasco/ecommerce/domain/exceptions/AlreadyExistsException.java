@@ -1,4 +1,4 @@
-package com.yanvelasco.ecommerce.domain.category.exceptions;
+package com.yanvelasco.ecommerce.domain.exceptions;
 
 public class AlreadyExistsException extends RuntimeException {
     private static final long serialVersionUID = 1L; 

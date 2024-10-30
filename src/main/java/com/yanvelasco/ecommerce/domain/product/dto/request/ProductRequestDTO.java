@@ -1,5 +1,7 @@
 package com.yanvelasco.ecommerce.domain.product.dto.request;
 
+import org.hibernate.validator.constraints.UUID;
+
 public record ProductRequestDTO(
     String productName,
     String productDescription,
@@ -7,6 +9,6 @@ public record ProductRequestDTO(
     Double productPrice,
     Double specialPrice,
     String productImage,
-    Long categoryId
+    UUID categoryId
 ) {
 }

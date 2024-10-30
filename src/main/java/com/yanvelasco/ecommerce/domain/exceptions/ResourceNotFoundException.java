@@ -1,6 +1,7 @@
-package  com.yanvelasco.ecommerce.domain.category.exceptions;
+package  com.yanvelasco.ecommerce.domain.exceptions;
 
 import java.util.UUID;
+
 import lombok.Getter;
 
 

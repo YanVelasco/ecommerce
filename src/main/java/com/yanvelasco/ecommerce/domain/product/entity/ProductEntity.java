@@ -1,5 +1,7 @@
 package com.yanvelasco.ecommerce.domain.product.entity;
 
+import java.util.UUID;
+
 import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
 
 import jakarta.persistence.Entity;
@@ -23,8 +25,8 @@ import lombok.Setter;
 public class ProductEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     private String productName;
 

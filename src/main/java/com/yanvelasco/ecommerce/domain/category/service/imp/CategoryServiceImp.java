@@ -15,12 +15,12 @@ import com.yanvelasco.ecommerce.domain.category.dto.request.CategoryRequestDTO;
 import com.yanvelasco.ecommerce.domain.category.dto.response.CategoryResponseDTO;
 import com.yanvelasco.ecommerce.domain.category.dto.response.PagedCategoryResponseDTO;
 import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
-import com.yanvelasco.ecommerce.domain.category.exceptions.AlreadyExistsException;
-import com.yanvelasco.ecommerce.domain.category.exceptions.EmpytException;
-import com.yanvelasco.ecommerce.domain.category.exceptions.ResourceNotFoundException;
 import com.yanvelasco.ecommerce.domain.category.mapper.CategoryMapper;
 import com.yanvelasco.ecommerce.domain.category.repository.CategoryRepository;
 import com.yanvelasco.ecommerce.domain.category.service.CategoryService;
+import com.yanvelasco.ecommerce.domain.exceptions.AlreadyExistsException;
+import com.yanvelasco.ecommerce.domain.exceptions.EmpytException;
+import com.yanvelasco.ecommerce.domain.exceptions.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 

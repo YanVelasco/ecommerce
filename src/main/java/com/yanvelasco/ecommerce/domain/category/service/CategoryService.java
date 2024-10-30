@@ -4,9 +4,9 @@ import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 
-import com.yanvelasco.ecommerce.domain.category.dto.CategoryRequestDTO;
-import com.yanvelasco.ecommerce.domain.category.dto.CategoryResponseDTO;
-import com.yanvelasco.ecommerce.domain.category.dto.PagedCategoryResponseDTO;
+import com.yanvelasco.ecommerce.domain.category.dto.request.CategoryRequestDTO;
+import com.yanvelasco.ecommerce.domain.category.dto.response.CategoryResponseDTO;
+import com.yanvelasco.ecommerce.domain.category.dto.response.PagedCategoryResponseDTO;
 
 public interface CategoryService {
     ResponseEntity<PagedCategoryResponseDTO> getCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);   

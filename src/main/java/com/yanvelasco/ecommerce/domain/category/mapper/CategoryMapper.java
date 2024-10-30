@@ -6,9 +6,9 @@ import org.modelmapper.spi.MappingContext;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import com.yanvelasco.ecommerce.domain.category.dto.CategoryRequestDTO;
-import com.yanvelasco.ecommerce.domain.category.dto.CategoryResponseDTO;
-import com.yanvelasco.ecommerce.domain.category.dto.PagedCategoryResponseDTO;
+import com.yanvelasco.ecommerce.domain.category.dto.request.CategoryRequestDTO;
+import com.yanvelasco.ecommerce.domain.category.dto.response.CategoryResponseDTO;
+import com.yanvelasco.ecommerce.domain.category.dto.response.PagedCategoryResponseDTO;
 import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
 
 import jakarta.annotation.PostConstruct;

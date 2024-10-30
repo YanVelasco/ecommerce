@@ -11,9 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.yanvelasco.ecommerce.domain.category.dto.CategoryRequestDTO;
-import com.yanvelasco.ecommerce.domain.category.dto.CategoryResponseDTO;
-import com.yanvelasco.ecommerce.domain.category.dto.PagedCategoryResponseDTO;
+import com.yanvelasco.ecommerce.domain.category.dto.request.CategoryRequestDTO;
+import com.yanvelasco.ecommerce.domain.category.dto.response.CategoryResponseDTO;
+import com.yanvelasco.ecommerce.domain.category.dto.response.PagedCategoryResponseDTO;
 import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
 import com.yanvelasco.ecommerce.domain.category.exceptions.AlreadyExistsException;
 import com.yanvelasco.ecommerce.domain.category.exceptions.EmpytException;

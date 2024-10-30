@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yanvelasco.ecommerce.domain.category.dto.CategoryRequestDTO;
-import com.yanvelasco.ecommerce.domain.category.dto.CategoryResponseDTO;
-import com.yanvelasco.ecommerce.domain.category.dto.PagedCategoryResponseDTO;
+import com.yanvelasco.ecommerce.domain.category.dto.request.CategoryRequestDTO;
+import com.yanvelasco.ecommerce.domain.category.dto.response.CategoryResponseDTO;
+import com.yanvelasco.ecommerce.domain.category.dto.response.PagedCategoryResponseDTO;
 import com.yanvelasco.ecommerce.domain.category.service.CategoryService;
 import com.yanvelasco.ecommerce.domain.config.AppConstants;
 

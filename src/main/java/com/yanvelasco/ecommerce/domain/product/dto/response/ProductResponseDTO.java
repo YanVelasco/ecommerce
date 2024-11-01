@@ -8,6 +8,7 @@ public record ProductResponseDTO(
     String productDescription,
     Integer productQuantity,
     Double productPrice,
+    Double discount,
     Double specialPrice,
     String productImage,
     UUID categoryId

@@ -40,6 +40,7 @@ public class ProductMapper {
                     source.getProductDescription(),
                     source.getProductQuantity(),
                     source.getProductPrice(),
+                    source.getDiscount(),
                     source.getSpecialPrice(),
                     source.getProductImage(),
                     source.getCategory().getId()
@@ -47,30 +48,22 @@ public class ProductMapper {
             }
         };
 
-        Converter<ProductRequestDTO, ProductEntity> toEntityConverter = new Converter<>() {
-            @Override
-            public ProductEntity convert(MappingContext<ProductRequestDTO, ProductEntity> context) {
-                ProductRequestDTO source = context.getSource();
-                ProductEntity entity = new ProductEntity();
-                entity.setProductName(source.productName());
-                entity.setProductDescription(source.productDescription());
-                entity.setProductQuantity(source.productQuantity());
-                entity.setProductPrice(source.productPrice());
-                entity.setSpecialPrice(source.specialPrice());
-                entity.setProductImage(source.productImage());
-                CategoryEntity category = categoryRepository.findById(UUID.fromString(source.categoryId().toString()))
-                        .orElseThrow(() -> new ResourceNotFoundException("Category", "id", UUID.fromString(source.categoryId().toString())));
-                entity.setCategory(category);                
-                return entity;
-            }
-        };
-
         modelMapper.addConverter(toResponseDTOConverter);
-        modelMapper.addConverter(toEntityConverter);
     }
 
-    public ProductEntity toEntity(ProductRequestDTO productRequestDTO) {
-        return modelMapper.map(productRequestDTO, ProductEntity.class);
+    public ProductEntity toEntity(ProductRequestDTO productRequestDTO, UUID categoryId) {
+        ProductEntity entity = new ProductEntity();
+        entity.setProductName(productRequestDTO.productName());
+        entity.setProductDescription(productRequestDTO.productDescription());
+        entity.setProductQuantity(productRequestDTO.productQuantity());
+        entity.setProductPrice(productRequestDTO.productPrice());
+        entity.setDiscount(productRequestDTO.discount());
+        entity.setProductImage(productRequestDTO.productImage());
+        CategoryEntity category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
+        entity.setCategory(category);
+        entity.calculateSpecialPrice();
+        return entity;
     }
 
     public ProductResponseDTO toResponseDTO(ProductEntity productEntity) {

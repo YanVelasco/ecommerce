@@ -36,6 +36,8 @@ public class ProductEntity {
 
     private Double productPrice;
 
+    private Double discount;
+
     private Double specialPrice;
 
     private String productImage;
@@ -43,5 +45,10 @@ public class ProductEntity {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
-    
+
+    public void calculateSpecialPrice() {
+        if (productPrice != null && discount != null) {
+            this.specialPrice = productPrice - (productPrice * discount);
+        }
+    }
 }

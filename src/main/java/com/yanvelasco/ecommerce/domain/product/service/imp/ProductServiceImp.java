@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.yanvelasco.ecommerce.domain.exceptions.EmpytException;
+import com.yanvelasco.ecommerce.domain.exceptions.ResourceNotFoundException;
 import com.yanvelasco.ecommerce.domain.product.dto.request.ProductRequestDTO;
 import com.yanvelasco.ecommerce.domain.product.dto.response.PagedProductResponseDTO;
 import com.yanvelasco.ecommerce.domain.product.dto.response.ProductResponseDTO;
@@ -54,4 +55,26 @@ public class ProductServiceImp implements ProductService {
         return ResponseEntity.ok(response);
     }
 
+    @Override
+    public ResponseEntity<PagedProductResponseDTO> getProductsByCategory(UUID categoryId, int pageNumber, int pageSize, String sortBy, String sortOrder) throws ResourceNotFoundException {
+
+        if (!productRepository.existsByCategoryId(categoryId)) {
+            throw new ResourceNotFoundException("Category not found with: ", "id", categoryId);
+        }
+
+        Sort sortByAndOrderBy = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sortByAndOrderBy);
+        Page<ProductEntity> productsPage = productRepository.findByCategoryId(categoryId, pageable);
+
+        if (productsPage.isEmpty()) {
+            throw new EmpytException("No products found");
+        }
+
+        PagedProductResponseDTO response = productMapper.toPagedProductResponseDTO(productsPage);
+
+        return ResponseEntity.ok(response);
+    }
 }

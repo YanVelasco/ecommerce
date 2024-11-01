@@ -11,4 +11,6 @@ import com.yanvelasco.ecommerce.domain.product.dto.response.ProductResponseDTO;
 public interface ProductService {
     ResponseEntity<ProductResponseDTO> createProduct(UUID categoryId, ProductRequestDTO productRequestDTO);
     ResponseEntity<PagedProductResponseDTO> getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+    ResponseEntity<PagedProductResponseDTO> getProductsByCategory(UUID categoryId, int pageNumber, int pageSize,
+            String sortBy, String sortOrder);
 }

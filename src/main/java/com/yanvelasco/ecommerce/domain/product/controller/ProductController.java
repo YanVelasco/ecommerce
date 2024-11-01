@@ -42,4 +42,17 @@ public class ProductController {
     ) {
         return productService.getAllProducts(pageNumber, pageSize, sortBy, sortOrder);  
     }
+
+    @GetMapping("/public/categories/{categoryId}/products")
+    public ResponseEntity<PagedProductResponseDTO> getProductsByCategory(
+            @PathVariable UUID categoryId,
+            @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) int pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+            @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_ORDER, required = false) String sortOrder
+    ) {
+        return productService.getProductsByCategory(categoryId, pageNumber, pageSize, sortBy, sortOrder);
+    }
+
+
 }

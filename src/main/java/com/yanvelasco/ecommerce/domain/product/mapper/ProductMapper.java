@@ -1,25 +1,26 @@
 package com.yanvelasco.ecommerce.domain.product.mapper;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import com.yanvelasco.ecommerce.domain.product.entity.ProductEntity;
 import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
 import com.yanvelasco.ecommerce.domain.category.repository.CategoryRepository;
 import com.yanvelasco.ecommerce.domain.exceptions.ResourceNotFoundException;
-import com.yanvelasco.ecommerce.domain.product.dto.request.ProductRequestDTO;
-import com.yanvelasco.ecommerce.domain.product.dto.response.PagedProductResponseDTO;
-import com.yanvelasco.ecommerce.domain.product.dto.response.ProductResponseDTO;
-import com.yanvelasco.ecommerce.domain.product.entity.ProductEntity;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import com.yanvelasco.ecommerce.domain.product.dto.request.ProductRequestDTO;
+import com.yanvelasco.ecommerce.domain.product.dto.response.PagedProductResponseDTO;
+import com.yanvelasco.ecommerce.domain.product.dto.response.ProductResponseDTO;
 
 @Component
 @RequiredArgsConstructor
@@ -36,13 +37,13 @@ public class ProductMapper {
                 ProductEntity source = context.getSource();
                 return new ProductResponseDTO(
                     source.getId(),
-                    source.getProductName(),
-                    source.getProductDescription(),
-                    source.getProductQuantity(),
-                    source.getProductPrice(),
+                    source.getName(),
+                    source.getDescription(),
+                    source.getQuantity(),
+                    source.getPrice(),
                     source.getDiscount(),
                     source.getSpecialPrice(),
-                    source.getProductImage(),
+                    source.getImage(),
                     source.getCategory().getId()
                 );
             }
@@ -53,12 +54,12 @@ public class ProductMapper {
 
     public ProductEntity toEntity(ProductRequestDTO productRequestDTO, UUID categoryId) {
         ProductEntity entity = new ProductEntity();
-        entity.setProductName(productRequestDTO.productName());
-        entity.setProductDescription(productRequestDTO.productDescription());
-        entity.setProductQuantity(productRequestDTO.productQuantity());
-        entity.setProductPrice(productRequestDTO.productPrice());
+        entity.setName(productRequestDTO.name());
+        entity.setDescription(productRequestDTO.description());
+        entity.setQuantity(productRequestDTO.quantity());
+        entity.setPrice(productRequestDTO.price());
         entity.setDiscount(productRequestDTO.discount());
-        entity.setProductImage(productRequestDTO.productImage());
+        entity.setImage(productRequestDTO.image());
         CategoryEntity category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
         entity.setCategory(category);

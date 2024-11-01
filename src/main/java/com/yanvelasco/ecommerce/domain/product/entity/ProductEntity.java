@@ -28,27 +28,27 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String productName;
+    private String name;
 
-    private String productDescription;
+    private String description;
 
-    private Integer productQuantity;
+    private Integer quantity;
 
-    private Double productPrice;
+    private Double price;
 
     private Double discount;
 
     private Double specialPrice;
 
-    private String productImage;
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
 
     public void calculateSpecialPrice() {
-        if (productPrice != null && discount != null) {
-            this.specialPrice = productPrice - (productPrice * discount);
+        if (price != null && discount != null) {
+            this.specialPrice = price - (price * discount);
         }
     }
 }

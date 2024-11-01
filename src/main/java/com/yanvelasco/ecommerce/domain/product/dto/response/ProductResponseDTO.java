@@ -4,13 +4,13 @@ import java.util.UUID;
 
 public record ProductResponseDTO(
     UUID id,
-    String productName,
-    String productDescription,
-    Integer productQuantity,
-    Double productPrice,
+    String name,
+    String description,
+    Integer quantity,
+    Double price,
     Double discount,
     Double specialPrice,
-    String productImage,
+    String image,
     UUID categoryId
 ) {
 }

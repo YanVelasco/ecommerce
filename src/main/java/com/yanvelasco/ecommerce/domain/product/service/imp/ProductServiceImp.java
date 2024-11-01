@@ -2,11 +2,17 @@ package com.yanvelasco.ecommerce.domain.product.service.imp;
 
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.yanvelasco.ecommerce.domain.exceptions.EmpytException;
 import com.yanvelasco.ecommerce.domain.product.dto.request.ProductRequestDTO;
+import com.yanvelasco.ecommerce.domain.product.dto.response.PagedProductResponseDTO;
 import com.yanvelasco.ecommerce.domain.product.dto.response.ProductResponseDTO;
 import com.yanvelasco.ecommerce.domain.product.entity.ProductEntity;
 import com.yanvelasco.ecommerce.domain.product.mapper.ProductMapper;
@@ -29,4 +35,23 @@ public class ProductServiceImp implements ProductService {
         ProductResponseDTO responseDTO = productMapper.toResponseDTO(savedProduct);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
+
+    @Override
+    public ResponseEntity<PagedProductResponseDTO> getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        Sort sortByAndOrderBy = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sortByAndOrderBy);
+        Page<ProductEntity> productsPage = productRepository.findAll(pageable);
+
+        if (productsPage.isEmpty()) {
+            throw new EmpytException("No categories found");
+        }
+
+        PagedProductResponseDTO response = productMapper.toPagedProductResponseDTO(productsPage);
+
+        return ResponseEntity.ok(response);
+    }
+
 }

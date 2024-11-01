@@ -1,11 +1,11 @@
 package com.yanvelasco.ecommerce.domain.product.dto.request;
 
 public record ProductRequestDTO(
-    String productName,
-    String productDescription,
-    Integer productQuantity,
-    Double productPrice,
+    String name,
+    String description,
+    Integer quantity,
+    Double price,
     Double discount,
-    String productImage
+    String image
 ) {
 }

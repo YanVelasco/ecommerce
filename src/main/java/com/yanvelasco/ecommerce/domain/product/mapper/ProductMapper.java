@@ -25,6 +25,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductMapper {
 
+    private final ModelMapper modelMapper;
+    private final CategoryRepository categoryRepository;
+
     private final class ConverterImplementation implements Converter<ProductEntity, ProductResponseDTO> {
         @Override
         public ProductResponseDTO convert(MappingContext<ProductEntity, ProductResponseDTO> context) {
@@ -43,8 +46,7 @@ public class ProductMapper {
         }
     }
 
-    private final ModelMapper modelMapper;
-    private final CategoryRepository categoryRepository;
+    
 
     @PostConstruct
     public void configureModelMapper() {

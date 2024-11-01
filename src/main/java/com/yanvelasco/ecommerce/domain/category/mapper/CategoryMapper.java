@@ -1,5 +1,8 @@
 package com.yanvelasco.ecommerce.domain.category.mapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.spi.MappingContext;
@@ -14,37 +17,38 @@ import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
 @RequiredArgsConstructor
 public class CategoryMapper {
+
+    private final class ConverterImplementation2 implements Converter<CategoryRequestDTO, CategoryEntity> {
+        @Override
+        public CategoryEntity convert(MappingContext<CategoryRequestDTO, CategoryEntity> context) {
+            CategoryRequestDTO source = context.getSource();
+            CategoryEntity entity = new CategoryEntity();
+            entity.setName(source.name());
+            return entity;
+        }
+    }
+
+    private final class ConverterImplementation implements Converter<CategoryEntity, CategoryResponseDTO> {
+        @Override
+        public CategoryResponseDTO convert(MappingContext<CategoryEntity, CategoryResponseDTO> context) {
+            CategoryEntity source = context.getSource();
+            return new CategoryResponseDTO(
+                source.getId(),
+                source.getName()
+            );
+        }
+    }
 
     private final ModelMapper modelMapper;
 
     @PostConstruct
     public void configureModelMapper() {
-        Converter<CategoryEntity, CategoryResponseDTO> toResponseDTOConverter = new Converter<>() {
-            @Override
-            public CategoryResponseDTO convert(MappingContext<CategoryEntity, CategoryResponseDTO> context) {
-                CategoryEntity source = context.getSource();
-                return new CategoryResponseDTO(
-                    source.getId(),
-                    source.getName()
-                );
-            }
-        };
+        Converter<CategoryEntity, CategoryResponseDTO> toResponseDTOConverter = new ConverterImplementation();
 
-        Converter<CategoryRequestDTO, CategoryEntity> toEntityConverter = new Converter<>() {
-            @Override
-            public CategoryEntity convert(MappingContext<CategoryRequestDTO, CategoryEntity> context) {
-                CategoryRequestDTO source = context.getSource();
-                CategoryEntity entity = new CategoryEntity();
-                entity.setName(source.name());
-                return entity;
-            }
-        };
+        Converter<CategoryRequestDTO, CategoryEntity> toEntityConverter = new ConverterImplementation2();
 
         modelMapper.addConverter(toResponseDTOConverter);
         modelMapper.addConverter(toEntityConverter);

@@ -59,7 +59,7 @@ public class ProductServiceImp implements ProductService {
     public ResponseEntity<PagedProductResponseDTO> getProductsByCategory(UUID categoryId, int pageNumber, int pageSize, String sortBy, String sortOrder) throws ResourceNotFoundException {
 
         if (!productRepository.existsByCategoryId(categoryId)) {
-            throw new ResourceNotFoundException("Category not found with: ", "id", categoryId);
+            throw new ResourceNotFoundException("Category", "id", categoryId);
         }
 
         Sort sortByAndOrderBy = sortOrder.equalsIgnoreCase("asc")

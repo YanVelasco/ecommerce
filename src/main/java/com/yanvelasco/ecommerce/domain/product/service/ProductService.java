@@ -1,8 +1,10 @@
 package com.yanvelasco.ecommerce.domain.product.service;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.yanvelasco.ecommerce.domain.product.dto.request.ProductRequestDTO;
 import com.yanvelasco.ecommerce.domain.product.dto.response.PagedProductResponseDTO;
@@ -23,4 +25,6 @@ public interface ProductService {
     ResponseEntity<ProductResponseDTO> updateProduct(UUID productId, ProductRequestDTO productRequestDTO);
 
     ResponseEntity<Void> deleteProduct(UUID productId);
+
+    ResponseEntity<ProductResponseDTO> updateProductImage(UUID productId, MultipartFile image) throws IOException;
 }

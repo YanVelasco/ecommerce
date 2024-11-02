@@ -1,5 +1,6 @@
 package com.yanvelasco.ecommerce.domain.product.controller;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.yanvelasco.ecommerce.domain.config.AppConstants;
 import com.yanvelasco.ecommerce.domain.product.dto.request.ProductRequestDTO;
@@ -42,7 +44,7 @@ public class ProductController {
             @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
             @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_ORDER, required = false) String sortOrder
     ) {
-        return productService.getAllProducts(pageNumber, pageSize, sortBy, sortOrder);  
+        return productService.getAllProducts(pageNumber, pageSize, sortBy, sortOrder);
     }
 
     @GetMapping("/public/categories/{categoryId}/products")
@@ -79,5 +81,12 @@ public class ProductController {
         return productService.deleteProduct(productId);
     }
 
+    @PutMapping("/products/{productId}/image")
+    public ResponseEntity<ProductResponseDTO> updateProductImage(
+            @PathVariable UUID productId,
+            @RequestParam("image") MultipartFile image
+    ) throws IOException {
+        return productService.updateProductImage(productId, image);
+    }
 
 }

@@ -19,6 +19,7 @@ import com.yanvelasco.ecommerce.domain.config.AppConstants;
 import com.yanvelasco.ecommerce.domain.product.dto.request.ProductRequestDTO;
 import com.yanvelasco.ecommerce.domain.product.dto.response.PagedProductResponseDTO;
 import com.yanvelasco.ecommerce.domain.product.dto.response.ProductResponseDTO;
+import com.yanvelasco.ecommerce.domain.product.service.FileService;
 import com.yanvelasco.ecommerce.domain.product.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,8 @@ import lombok.RequiredArgsConstructor;
 public class ProductController {
 
     private final ProductService productService;
+
+    private final FileService fileService;
 
     @PostMapping("/admin/categories/{categoryId}/product")
     public ResponseEntity<ProductResponseDTO> createProduct(
@@ -86,7 +89,7 @@ public class ProductController {
             @PathVariable UUID productId,
             @RequestParam("image") MultipartFile image
     ) throws IOException {
-        return productService.updateProductImage(productId, image);
+        return fileService.updateProductImage(productId, image);
     }
 
 }

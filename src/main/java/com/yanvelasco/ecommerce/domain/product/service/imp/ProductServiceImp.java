@@ -1,9 +1,5 @@
 package com.yanvelasco.ecommerce.domain.product.service.imp;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -13,7 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.yanvelasco.ecommerce.domain.exceptions.EmpytException;
 import com.yanvelasco.ecommerce.domain.exceptions.ResourceNotFoundException;
@@ -143,47 +138,6 @@ public class ProductServiceImp implements ProductService {
         productRepository.delete(productEntity);
 
         return ResponseEntity.noContent().build();
-    }
-
-    @Override
-    public ResponseEntity<ProductResponseDTO> updateProductImage(UUID productId, MultipartFile image) throws IOException {
-
-        ProductEntity productEntity = productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", productId));
-
-        String path = "/src/main/resources/static/images";
-        String fileName = uploadImage(path, image);
-
-        productEntity.setImage(fileName);
-
-        ProductEntity updatedProduct = productRepository.save(productEntity);
-        ProductResponseDTO responseDTO = productMapper.toResponseDTO(updatedProduct);
-        return ResponseEntity.ok(responseDTO);
-
-    }
-
-    private String uploadImage(String path, MultipartFile image) throws IOException {
-        
-        String originalFilename = image.getOriginalFilename();
-
-        String randomUUID = UUID.randomUUID().toString();
-
-        if (originalFilename == null) {
-            throw new IllegalArgumentException("Original filename is null");
-        }
-
-        String fileName = randomUUID.concat(originalFilename.substring(originalFilename.lastIndexOf('.')));
-        String filePath = path + File.separator + fileName;
-        
-        File folder = new File(path);
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
-
-        Files.copy(image.getInputStream(), Paths.get(filePath));
-
-        return fileName;
-
     }
 
 }

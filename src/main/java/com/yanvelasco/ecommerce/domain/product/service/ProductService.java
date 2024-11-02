@@ -15,4 +15,5 @@ public interface ProductService {
             String sortBy, String sortOrder);
     ResponseEntity<PagedProductResponseDTO> getProductsByKeyword(String keyword, int pageNumber, int pageSize,
             String sortBy, String sortOrder);
+    ResponseEntity<ProductResponseDTO> updateProduct(UUID productId, ProductRequestDTO productRequestDTO);
 }

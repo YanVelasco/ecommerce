@@ -46,12 +46,9 @@ public class ProductMapper {
         }
     }
 
-    
-
     @PostConstruct
     public void configureModelMapper() {
         Converter<ProductEntity, ProductResponseDTO> toResponseDTOConverter = new ConverterImplementation();
-
         modelMapper.addConverter(toResponseDTOConverter);
     }
 
@@ -62,7 +59,7 @@ public class ProductMapper {
         entity.setQuantity(productRequestDTO.quantity());
         entity.setPrice(productRequestDTO.price());
         entity.setDiscount(productRequestDTO.discount());
-        entity.setImage(productRequestDTO.image());
+        entity.setImage("default.jpg");
         CategoryEntity category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
         entity.setCategory(category);

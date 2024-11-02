@@ -96,4 +96,37 @@ public class ProductServiceImp implements ProductService {
 
         return ResponseEntity.ok(response);
     }
+
+    @Override
+    public ResponseEntity<ProductResponseDTO> updateProduct(UUID productId, ProductRequestDTO productRequestDTO) {
+        ProductEntity productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", productId));
+
+                if (productRequestDTO.name() != null) {
+                    productEntity.setName(productRequestDTO.name());
+                }
+
+                if (productRequestDTO.description() != null) {
+                    productEntity.setDescription(productRequestDTO.description());
+                }
+
+                if (productRequestDTO.quantity() != null) {
+                    productEntity.setQuantity(productRequestDTO.quantity());
+                }
+
+                
+                if (productRequestDTO.price() != null) {
+                    productEntity.setPrice(productRequestDTO.price());
+                }
+
+                if (productRequestDTO.discount() != null) {
+                    productEntity.setDiscount(productRequestDTO.discount());
+                }
+
+        ProductEntity updatedProduct = productRepository.save(productEntity);
+        ProductResponseDTO responseDTO = productMapper.toResponseDTO(updatedProduct);
+
+        return ResponseEntity.ok(responseDTO);
+    }
+
 }

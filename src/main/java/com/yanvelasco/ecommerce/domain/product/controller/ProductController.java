@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,6 +64,13 @@ public class ProductController {
             @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_ORDER, required = false) String sortOrder
     ) {
         return productService.getProductsByKeyword(keyword, pageNumber, pageSize, sortBy, sortOrder);
+    }
+
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<ProductResponseDTO> updateProduct(
+            @PathVariable UUID productId,
+            @RequestBody ProductRequestDTO productRequestDTO) {
+        return productService.updateProduct(productId, productRequestDTO);
     }
 
 

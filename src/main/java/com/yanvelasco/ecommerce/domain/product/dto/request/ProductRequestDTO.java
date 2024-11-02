@@ -5,7 +5,6 @@ public record ProductRequestDTO(
     String description,
     Integer quantity,
     Double price,
-    Double discount,
-    String image
+    Double discount
 ) {
 }

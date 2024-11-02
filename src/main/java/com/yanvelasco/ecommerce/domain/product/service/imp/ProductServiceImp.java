@@ -123,6 +123,8 @@ public class ProductServiceImp implements ProductService {
                     productEntity.setDiscount(productRequestDTO.discount());
                 }
 
+                productEntity.calculateSpecialPrice();
+
         ProductEntity updatedProduct = productRepository.save(productEntity);
         ProductResponseDTO responseDTO = productMapper.toResponseDTO(updatedProduct);
 

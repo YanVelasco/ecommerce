@@ -9,7 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.yanvelasco.ecommerce.domain.category.dto.request.CategoryRequestDTO;
 import com.yanvelasco.ecommerce.domain.category.dto.response.CategoryResponseDTO;
@@ -32,7 +31,6 @@ public class CategoryServiceImp implements CategoryService {
     private final CategoryMapper categoryMapper;
 
     @Override
-    @Transactional(readOnly = true)
     public ResponseEntity<PagedCategoryResponseDTO> getCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
 
         Sort sortByAndOrderBy = sortOrder.equalsIgnoreCase("asc")
@@ -52,7 +50,6 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     @Override
-    @Transactional
     public ResponseEntity<CategoryResponseDTO> addCategory(CategoryRequestDTO category) {
         if (categoryRepository.findByName(category.name()).isPresent()) {
             throw new AlreadyExistsException("Category already exists");
@@ -62,7 +59,6 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     @Override
-    @Transactional
     public ResponseEntity<Object> deleteCategory(UUID id) {
         var categoryToDelete = categoryRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Category", "id", id)
@@ -72,7 +68,6 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     @Override
-    @Transactional
     public ResponseEntity<CategoryResponseDTO> updateCategory(UUID id, CategoryRequestDTO category) {
         var categoryToUpdate = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));

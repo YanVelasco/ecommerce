@@ -131,4 +131,14 @@ public class ProductServiceImp implements ProductService {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @Override
+    public ResponseEntity<Void> deleteProduct(UUID productId) {
+        ProductEntity productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", productId));
+
+        productRepository.delete(productEntity);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

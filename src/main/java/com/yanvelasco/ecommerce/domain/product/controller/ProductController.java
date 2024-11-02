@@ -3,6 +3,7 @@ package com.yanvelasco.ecommerce.domain.product.controller;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,6 +72,11 @@ public class ProductController {
             @PathVariable UUID productId,
             @RequestBody ProductRequestDTO productRequestDTO) {
         return productService.updateProduct(productId, productRequestDTO);
+    }
+
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable UUID productId) {
+        return productService.deleteProduct(productId);
     }
 
 

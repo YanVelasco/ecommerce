@@ -151,7 +151,7 @@ public class ProductServiceImp implements ProductService {
         ProductEntity productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", productId));
 
-        String path = "../../../../../../../../resources/static/images/products";
+        String path = "/src/main/resources/static/images";
         String fileName = uploadImage(path, image);
 
         productEntity.setImage(fileName);
@@ -173,7 +173,7 @@ public class ProductServiceImp implements ProductService {
         }
 
         String fileName = randomUUID.concat(originalFilename.substring(originalFilename.lastIndexOf('.')));
-        String filePath = path + File.pathSeparator + fileName;
+        String filePath = path + File.separator + fileName;
         
         File folder = new File(path);
         if (!folder.exists()) {

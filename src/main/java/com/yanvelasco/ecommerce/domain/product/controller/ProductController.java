@@ -67,14 +67,14 @@ public class ProductController {
         return productService.getProductsByKeyword(keyword, pageNumber, pageSize, sortBy, sortOrder);
     }
 
-    @PutMapping("/products/{productId}")
+    @PutMapping("/admin/products/{productId}")
     public ResponseEntity<ProductResponseDTO> updateProduct(
             @PathVariable UUID productId,
             @RequestBody ProductRequestDTO productRequestDTO) {
         return productService.updateProduct(productId, productRequestDTO);
     }
 
-    @DeleteMapping("/products/{productId}")
+    @DeleteMapping("/admin/products/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable UUID productId) {
         return productService.deleteProduct(productId);
     }

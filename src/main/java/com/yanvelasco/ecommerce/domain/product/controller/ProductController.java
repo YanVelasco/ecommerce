@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.Valid;
+
 import com.yanvelasco.ecommerce.domain.config.AppConstants;
 import com.yanvelasco.ecommerce.domain.product.dto.request.ProductRequestDTO;
 import com.yanvelasco.ecommerce.domain.product.dto.response.PagedProductResponseDTO;
@@ -36,7 +38,7 @@ public class ProductController {
     @PostMapping("/admin/categories/{categoryId}/product")
     public ResponseEntity<ProductResponseDTO> createProduct(
             @PathVariable UUID categoryId,
-            @RequestBody ProductRequestDTO productRequestDTO) {
+            @RequestBody @Valid ProductRequestDTO productRequestDTO) {
         return productService.createProduct(categoryId, productRequestDTO);
     }
 
@@ -75,7 +77,7 @@ public class ProductController {
     @PutMapping("/admin/products/{productId}")
     public ResponseEntity<ProductResponseDTO> updateProduct(
             @PathVariable UUID productId,
-            @RequestBody ProductRequestDTO productRequestDTO) {
+            @RequestBody @Valid ProductRequestDTO productRequestDTO) {
         return productService.updateProduct(productId, productRequestDTO);
     }
 

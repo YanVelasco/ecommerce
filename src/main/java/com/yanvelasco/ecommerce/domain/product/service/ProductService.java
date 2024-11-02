@@ -13,4 +13,6 @@ public interface ProductService {
     ResponseEntity<PagedProductResponseDTO> getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
     ResponseEntity<PagedProductResponseDTO> getProductsByCategory(UUID categoryId, int pageNumber, int pageSize,
             String sortBy, String sortOrder);
+    ResponseEntity<PagedProductResponseDTO> getProductsByKeyword(String keyword, int pageNumber, int pageSize,
+            String sortBy, String sortOrder);
 }

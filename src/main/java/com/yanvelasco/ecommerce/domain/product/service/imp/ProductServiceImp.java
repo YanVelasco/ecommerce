@@ -26,8 +26,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductServiceImp implements ProductService {
 
-    private final ProductMapper productMapper;
     private final ProductRepository productRepository;
+
+    private final ProductMapper productMapper;
 
     @Override
     public ResponseEntity<ProductResponseDTO> createProduct(UUID categoryId, ProductRequestDTO productRequestDTO) {
@@ -68,6 +69,24 @@ public class ProductServiceImp implements ProductService {
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sortByAndOrderBy);
         Page<ProductEntity> productsPage = productRepository.findByCategoryId(categoryId, pageable);
+
+        if (productsPage.isEmpty()) {
+            throw new EmpytException("No products found");
+        }
+
+        PagedProductResponseDTO response = productMapper.toPagedProductResponseDTO(productsPage);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<PagedProductResponseDTO> getProductsByKeyword(String keyword, int pageNumber, int pageSize, String sortBy, String sortOrder) {
+        Sort sortByAndOrderBy = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sortByAndOrderBy);
+        Page<ProductEntity> productsPage = productRepository.searchByKeyword(keyword, pageable);
 
         if (productsPage.isEmpty()) {
             throw new EmpytException("No products found");

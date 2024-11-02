@@ -54,5 +54,16 @@ public class ProductController {
         return productService.getProductsByCategory(categoryId, pageNumber, pageSize, sortBy, sortOrder);
     }
 
+    @GetMapping("/public/products/keyword/{keyword}")
+    public ResponseEntity<PagedProductResponseDTO> getProductsByKeyword(
+            @PathVariable String keyword,
+            @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) int pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+            @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_ORDER, required = false) String sortOrder
+    ) {
+        return productService.getProductsByKeyword(keyword, pageNumber, pageSize, sortBy, sortOrder);
+    }
+
 
 }

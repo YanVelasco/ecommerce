@@ -45,6 +45,6 @@ public class UserEntity {
     )
     private Set<RoleEntity> roles = Set.of();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
     private Set<ProductEntity> products = Set.of();
 }

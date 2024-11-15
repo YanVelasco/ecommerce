@@ -17,9 +17,9 @@ import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
 import com.yanvelasco.ecommerce.domain.category.mapper.CategoryMapper;
 import com.yanvelasco.ecommerce.domain.category.repository.CategoryRepository;
 import com.yanvelasco.ecommerce.domain.category.service.CategoryService;
-import com.yanvelasco.ecommerce.domain.exceptions.AlreadyExistsException;
-import com.yanvelasco.ecommerce.domain.exceptions.EmpytException;
-import com.yanvelasco.ecommerce.domain.exceptions.ResourceNotFoundException;
+import com.yanvelasco.ecommerce.exceptions.AlreadyExistsException;
+import com.yanvelasco.ecommerce.exceptions.EmpytException;
+import com.yanvelasco.ecommerce.exceptions.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 

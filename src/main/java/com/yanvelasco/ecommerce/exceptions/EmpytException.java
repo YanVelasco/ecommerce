@@ -1,4 +1,4 @@
-package com.yanvelasco.ecommerce.domain.exceptions;
+package com.yanvelasco.ecommerce.exceptions;
 
 public class EmpytException extends RuntimeException {
     public EmpytException(String message) {

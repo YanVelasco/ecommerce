@@ -1,4 +1,4 @@
-package com.yanvelasco.ecommerce.domain.config.ModelMapperConfig;
+package com.yanvelasco.ecommerce.config.ModelMapperConfig;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

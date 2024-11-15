@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
 import com.yanvelasco.ecommerce.domain.category.repository.CategoryRepository;
-import com.yanvelasco.ecommerce.domain.exceptions.ResourceNotFoundException;
+import com.yanvelasco.ecommerce.exceptions.ResourceNotFoundException;
 import com.yanvelasco.ecommerce.domain.product.dto.request.ProductRequestDTO;
 import com.yanvelasco.ecommerce.domain.product.dto.response.PagedProductResponseDTO;
 import com.yanvelasco.ecommerce.domain.product.dto.response.ProductResponseDTO;

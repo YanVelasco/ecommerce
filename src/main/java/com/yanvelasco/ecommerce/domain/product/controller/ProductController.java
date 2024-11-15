@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 
-import com.yanvelasco.ecommerce.domain.config.AppConstants;
+import com.yanvelasco.ecommerce.config.AppConstants;
 import com.yanvelasco.ecommerce.domain.product.dto.request.ProductRequestDTO;
 import com.yanvelasco.ecommerce.domain.product.dto.response.PagedProductResponseDTO;
 import com.yanvelasco.ecommerce.domain.product.dto.response.ProductResponseDTO;

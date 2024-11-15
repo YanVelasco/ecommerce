@@ -1,4 +1,4 @@
-package com.yanvelasco.ecommerce.domain.exceptions;
+package com.yanvelasco.ecommerce.exceptions;
 
 import java.util.HashMap;
 import java.util.Map;

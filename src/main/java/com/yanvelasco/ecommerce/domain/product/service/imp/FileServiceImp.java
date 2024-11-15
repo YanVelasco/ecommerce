@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.yanvelasco.ecommerce.domain.exceptions.ResourceNotFoundException;
+import com.yanvelasco.ecommerce.exceptions.ResourceNotFoundException;
 import com.yanvelasco.ecommerce.domain.product.dto.response.ProductResponseDTO;
 import com.yanvelasco.ecommerce.domain.product.entity.ProductEntity;
 import com.yanvelasco.ecommerce.domain.product.mapper.ProductMapper;

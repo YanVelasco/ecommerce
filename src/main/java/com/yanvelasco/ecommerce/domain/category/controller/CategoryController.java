@@ -17,7 +17,7 @@ import com.yanvelasco.ecommerce.domain.category.dto.request.CategoryRequestDTO;
 import com.yanvelasco.ecommerce.domain.category.dto.response.CategoryResponseDTO;
 import com.yanvelasco.ecommerce.domain.category.dto.response.PagedCategoryResponseDTO;
 import com.yanvelasco.ecommerce.domain.category.service.CategoryService;
-import com.yanvelasco.ecommerce.domain.config.AppConstants;
+import com.yanvelasco.ecommerce.config.AppConstants;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

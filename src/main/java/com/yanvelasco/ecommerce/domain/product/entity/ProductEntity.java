@@ -1,20 +1,14 @@
 package com.yanvelasco.ecommerce.domain.product.entity;
 
-import java.util.UUID;
-
 import com.yanvelasco.ecommerce.domain.category.entity.CategoryEntity;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.yanvelasco.ecommerce.domain.user.entities.UserEntity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "products")
@@ -45,6 +39,10 @@ public class ProductEntity {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
+
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private UserEntity user;
 
     public void calculateSpecialPrice() {
         if (price != null && discount != null) {

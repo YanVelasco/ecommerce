@@ -1,5 +1,6 @@
 package com.yanvelasco.ecommerce.domain.user.entities;
 
+import com.yanvelasco.ecommerce.domain.product.entity.ProductEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -44,4 +45,6 @@ public class UserEntity {
     )
     private Set<RoleEntity> roles = Set.of();
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users", orphanRemoval = true)
+    private Set<ProductEntity> products = Set.of();
 }

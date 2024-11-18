@@ -23,7 +23,26 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    private final UserDetailsServiceImp UserDetailsServiceImp;
+    private static final String[] AUTH_WHITELIST = {
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/webjars/**",
+            "configuration/ui",
+            "configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            "/swagger-resources",
+            "/swagger-resources/configuration/ui",
+            "/swagger-resources/configuration/security",
+            "/api/auth/**",
+            "/api/admin/**",
+            "/api/public/**",
+            "/api/tes/**",
+            "/images/**"
+    };
+
+    private final UserDetailsServiceImp userDetailsServiceImp;
     private final AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
@@ -34,7 +53,7 @@ public class WebSecurityConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(UserDetailsServiceImp);
+        authProvider.setUserDetailsService(userDetailsServiceImp);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
@@ -55,16 +74,9 @@ public class WebSecurityConfig {
                .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                .authorizeHttpRequests(
-                          authz -> authz.requestMatchers("/api/auth/**").permitAll()
-                                  .requestMatchers("/v3/api-docs/**","/swagger-resources/**", "/swagger-ui/**", "/webjars/**", "configuration/ui", "configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger-resources", "/swagger-resources/configuration/ui", "/swagger-resources/configuration/security").permitAll()
-                                  .requestMatchers("/swagger-ui/**").permitAll()
-                                  .requestMatchers("/api/admin/**").permitAll()
-                                  .requestMatchers("/api/public/**").permitAll()
-                                  .requestMatchers("/api/tes/**").permitAll()
-                                  .requestMatchers("/images/**").permitAll()
-                                  .anyRequest().authenticated()
-
-               );
+                          authz -> authz
+                                  .requestMatchers(AUTH_WHITELIST).permitAll()
+                                  .anyRequest().authenticated());
 
                http.authenticationProvider(authenticationProvider());
                http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

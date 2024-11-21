@@ -2,9 +2,7 @@ package com.yanvelasco.ecommerce.domain.user.entities;
 
 import com.yanvelasco.ecommerce.domain.product.entity.ProductEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -28,16 +26,10 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank
-    @Size(max = 50)
     private String userName;
 
-    @NotBlank
-    @Email
     private String email;
 
-    @NotBlank
-    @Size(max = 120)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -57,4 +49,10 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "address_id")
     )
     private List<AddressEntity> addresses = new ArrayList<>();
+
+    public UserEntity(@NotBlank(message = "Username is required") String username, @NotBlank(message = "Email is required") String email, String encode) {
+        this.userName = username;
+        this.email = email;
+        this.password = encode;
+    }
 }

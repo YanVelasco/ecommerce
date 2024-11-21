@@ -104,5 +104,4 @@ public class UserDetailsIpm implements UserDetails {
         UserDetailsIpm user = (UserDetailsIpm) o;
         return id.equals(user.id);
     }
-
 }

@@ -48,7 +48,7 @@ public class ProductServiceImp implements ProductService {
         Page<ProductEntity> productsPage = productRepository.findAll(pageable);
 
         if (productsPage.isEmpty()) {
-            throw new EmpytException("No categories found");
+            throw new EmpytException("No products found");
         }
 
         PagedProductResponseDTO response = productMapper.toPagedProductResponseDTO(productsPage);

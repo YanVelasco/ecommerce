@@ -129,7 +129,6 @@ public class WebSecurityConfig {
                         .userName("user")
                         .email("user@user")
                         .password(passwordEncoder.encode("user"))
-                        .roles(userRoles)
                         .build());
             }
 
@@ -138,7 +137,6 @@ public class WebSecurityConfig {
                         .userName("seller")
                         .email("seller@seller")
                         .password(passwordEncoder.encode("seller"))
-                        .roles(sellerRoles)
                         .build());
             }
 
@@ -147,11 +145,10 @@ public class WebSecurityConfig {
                         .userName("admin")
                         .email("admin@admin")
                         .password(passwordEncoder.encode("admin"))
-                        .roles(adminRoles)
                         .build());
             }
 
-            // Update roles for existing users
+            //Update roles for existing users
             userRepository.findByUserName("user").ifPresent(user -> {
                         user.setRoles(userRoles);
                         userRepository.save(user);
@@ -169,12 +166,6 @@ public class WebSecurityConfig {
                         userRepository.save(admin);
                     }
             );
-
-            // Revoke and change compromised password
-            userRepository.findByUserName("admin").ifPresent(admin -> {
-                admin.setPassword(passwordEncoder.encode("newSecurePassword"));
-                userRepository.save(admin);
-            });
         };
     }
 }

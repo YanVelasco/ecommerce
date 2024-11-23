@@ -44,12 +44,12 @@ public class SecurityController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody @Valid LoginRequestDTO loginRequest) {
         Authentication authentication;
-        try{
+        try {
             authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password())
             );
         } catch (AuthenticationException e) {
-            Map<String, Object>map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             map.put("message", "Bad credentials");
             map.put("status", false);
             return ResponseEntity.badRequest().body(map);
@@ -67,7 +67,7 @@ public class SecurityController {
             roles.add(authority);
         }
 
-        UserInfoResponseDTO loginResponseDTO = new UserInfoResponseDTO( userDetails.getId(),jwtToken, userDetails.getUsername(), roles);
+        UserInfoResponseDTO loginResponseDTO = new UserInfoResponseDTO(userDetails.getId(), jwtToken, userDetails.getUsername(), roles);
         return ResponseEntity.ok(loginResponseDTO);
     }
 
@@ -89,22 +89,17 @@ public class SecurityController {
         if (strRoles == null) {
             RoleEntity userRole = roleRepository.findByRoleName(ModelRole.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-
             roles.add(userRole);
-        }else {
+        } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
-                        RoleEntity adminRole = roleRepository.findByRoleName(ModelRole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-
+                        roles.addAll(roleRepository.findAll());
                         break;
                     case "seller":
-                        RoleEntity modRole = roleRepository.findByRoleName(ModelRole.ROLE_SELLER)
+                        RoleEntity sellerRole = roleRepository.findByRoleName(ModelRole.ROLE_SELLER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-
+                        roles.add(sellerRole);
                         break;
                     default:
                         RoleEntity userRole = roleRepository.findByRoleName(ModelRole.ROLE_USER)

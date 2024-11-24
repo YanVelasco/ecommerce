@@ -45,9 +45,8 @@ public class WebSecurityConfig {
             "/swagger-resources/configuration/ui",
             "/swagger-resources/configuration/security",
             "/api/auth/**",
-            "/api/admin/**",
-            "/api/public/**",
-            "/api/tes/**",
+//            "/api/admin/**",
+//            "/api/public/**",
             "/images/**",
             "/h2-console/**",
     };

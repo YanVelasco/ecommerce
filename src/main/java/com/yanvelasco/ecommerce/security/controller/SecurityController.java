@@ -12,6 +12,8 @@ import com.yanvelasco.ecommerce.security.jwt.JwtUtils;
 import com.yanvelasco.ecommerce.security.services.UserDetailsIpm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -59,7 +61,7 @@ public class SecurityController {
 
         UserDetailsIpm userDetails = (UserDetailsIpm) authentication.getPrincipal();
 
-        String jwtToken = jwtUtils.generateTokenFromUsername(userDetails);
+        ResponseCookie jwtCookie = jwtUtils.generaResponseCookie(userDetails.getUsername());
 
         List<String> roles = new ArrayList<>();
         for (GrantedAuthority grantedAuthority : userDetails.getAuthorities()) {
@@ -67,8 +69,8 @@ public class SecurityController {
             roles.add(authority);
         }
 
-        UserInfoResponseDTO loginResponseDTO = new UserInfoResponseDTO(userDetails.getId(), jwtToken, userDetails.getUsername(), roles);
-        return ResponseEntity.ok(loginResponseDTO);
+        UserInfoResponseDTO loginResponseDTO = new UserInfoResponseDTO(userDetails.getId(), userDetails.getUsername(), roles);
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(loginResponseDTO);
     }
 
     @PostMapping("/signup")

@@ -6,7 +6,7 @@ import java.util.UUID;
 public record UserInfoResponseDTO(
         UUID id,
         String username,
-        String jwtToken,
+        String jwtCookie,
         List<String> roles
 ) {
 }

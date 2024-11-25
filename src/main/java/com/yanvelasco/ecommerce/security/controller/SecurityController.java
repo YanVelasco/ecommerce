@@ -25,10 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -115,6 +112,15 @@ public class SecurityController {
         userRepository.save(user);
 
         return ResponseEntity.ok(Map.of("message", "User registered successfully"));
+    }
+
+    @GetMapping("/username")
+    public String currentUserName(Authentication authentication) {
+        if (authentication != null) {
+            return authentication.getName();
+        }else {
+            return null;
+        }
     }
 
 }

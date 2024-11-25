@@ -56,18 +56,7 @@ public class SecurityController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        UserDetailsIpm userDetails = (UserDetailsIpm) authentication.getPrincipal();
-
-        ResponseCookie jwtCookie = jwtUtils.generaResponseCookie(userDetails.getUsername());
-
-        List<String> roles = new ArrayList<>();
-        for (GrantedAuthority grantedAuthority : userDetails.getAuthorities()) {
-            String authority = grantedAuthority.getAuthority();
-            roles.add(authority);
-        }
-
-        UserInfoResponseDTO loginResponseDTO = new UserInfoResponseDTO(userDetails.getId(), userDetails.getUsername(), jwtCookie.toString() ,roles);
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(loginResponseDTO);
+        return getUserInfoResponseDTOResponseEntity(authentication);
     }
 
     @PostMapping("/signup")
@@ -125,6 +114,10 @@ public class SecurityController {
 
     @GetMapping("/user")
     public ResponseEntity<UserInfoResponseDTO> getUserDetails(Authentication authentication) {
+        return getUserInfoResponseDTOResponseEntity(authentication);
+    }
+
+    private ResponseEntity<UserInfoResponseDTO> getUserInfoResponseDTOResponseEntity(Authentication authentication) {
         UserDetailsIpm userDetails = (UserDetailsIpm) authentication.getPrincipal();
 
         ResponseCookie jwtCookie = jwtUtils.generaResponseCookie(userDetails.getUsername());

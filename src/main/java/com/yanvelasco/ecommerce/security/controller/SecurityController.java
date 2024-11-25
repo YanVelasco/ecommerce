@@ -132,4 +132,10 @@ public class SecurityController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(loginResponseDTO);
     }
 
+    @PostMapping("/signout")
+    public ResponseEntity<?> logout() {
+        ResponseCookie jwtCookie = jwtUtils.deleteJwtCookie();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(Map.of("message", "Logout successful"));
+    }
+
 }

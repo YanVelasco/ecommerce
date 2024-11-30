@@ -1,5 +1,6 @@
 package com.yanvelasco.ecommerce.domain.user.entities;
 
+import com.yanvelasco.ecommerce.domain.cart.entities.CartEntity;
 import com.yanvelasco.ecommerce.domain.product.entity.ProductEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -49,6 +50,11 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "address_id")
     )
     private List<AddressEntity> addresses = new ArrayList<>();
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private CartEntity cart;
+
 
     public UserEntity(@NotBlank(message = "Username is required") String username, @NotBlank(message = "Email is required") String email, String encode) {
         this.userName = username;

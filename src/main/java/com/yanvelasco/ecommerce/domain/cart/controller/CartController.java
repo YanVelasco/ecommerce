@@ -46,4 +46,11 @@ public class CartController {
         return cartService.getCartByUser(emailId ,cartId);
     }
 
+    @PutMapping("/carts/products/{productId}/quantity/{operation}")
+    public ResponseEntity<CartResponseDto> updateCart(
+            @PathVariable UUID productId,
+            @PathVariable String operation
+    ) {
+        return cartService.updateProductQuantityInCart(productId, operation.equalsIgnoreCase("delete") ? -1 : 1);
+    }
 }

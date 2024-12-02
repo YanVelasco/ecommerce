@@ -12,4 +12,6 @@ public interface CartService {
      ResponseEntity<List<CartResponseDto>> getAllCart();
 
     ResponseEntity<CartResponseDto> getCartByUser(String emailId, UUID cartId);
+
+    ResponseEntity<CartResponseDto> updateProductQuantityInCart(UUID productId, int delete);
 }

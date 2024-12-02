@@ -10,4 +10,6 @@ public interface CartService {
      ResponseEntity<CartResponseDto> addProductToCart(UUID productId, Integer quantity);
 
      ResponseEntity<List<CartResponseDto>> getAllCart();
+
+    ResponseEntity<CartResponseDto> getCartByUser(String emailId, UUID cartId);
 }

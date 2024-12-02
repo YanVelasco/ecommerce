@@ -88,6 +88,19 @@ public class CartServiceImpl implements CartService {
         return ResponseEntity.ok(cartDTOs);
     }
 
+    @Override
+    public ResponseEntity<CartResponseDto> getCartByUser(String emailId, UUID cartId) {
+        CartEntity cart = cartRepository.findCartByEmailAndCartId(emailId, cartId);
+
+        if (cart == null) {
+            throw new ResourceNotFoundException("Cart", "cartId", cartId);
+        }
+
+        CartResponseDto cartDTO = cartMapper.toResponseDTO(cart);
+
+        return ResponseEntity.ok(cartDTO);
+    }
+
     private CartEntity createCart() {
         CartEntity userCart = cartRepository.findCartByEmail(authUtil.loggedInEmail());
         if (userCart != null) {

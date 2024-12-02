@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -15,6 +16,11 @@ import java.util.UUID;
 public class CartController {
 
     private final CartService cartService;
+
+    @GetMapping("/carts")
+    public ResponseEntity<List<CartResponseDto>> getAllCarts() {
+        return cartService.getAllCart();
+    }
 
 
     @PostMapping("/carts/products/{productId}/quantity/{quantity}")

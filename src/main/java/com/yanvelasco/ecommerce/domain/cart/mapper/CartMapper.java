@@ -9,7 +9,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.stereotype.Component;
 
-
 import com.yanvelasco.ecommerce.domain.cart.entities.CartEntity;
 import com.yanvelasco.ecommerce.domain.product.dto.response.ProductResponseDTO;
 
@@ -38,7 +37,7 @@ public class CartMapper {
                             item.getProduct().getImage(),
                             item.getProduct().getCategory().getId()
                     ))
-                    .collect(Collectors.toList());
+                    .toList();
             return new CartResponseDto(source.getId(), source.getTotalPrice(), products);
         }
     }
@@ -51,5 +50,11 @@ public class CartMapper {
 
     public CartResponseDto toResponseDTO(CartEntity cartEntity) {
         return modelMapper.map(cartEntity, CartResponseDto.class);
+    }
+
+    public List<CartResponseDto> toListResponseDTO(List<CartEntity> cartEntities) {
+        return cartEntities.stream()
+                .map(this::toResponseDTO)
+                .toList();
     }
 }

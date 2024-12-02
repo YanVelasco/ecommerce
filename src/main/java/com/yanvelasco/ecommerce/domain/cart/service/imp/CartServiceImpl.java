@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -76,6 +77,15 @@ public class CartServiceImpl implements CartService {
         CartResponseDto cartDTO = cartMapper.toResponseDTO(cart);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(cartDTO);
+    }
+
+    @Override
+    public ResponseEntity<List<CartResponseDto>> getAllCart() {
+        List<CartEntity> carts = cartRepository.findAll();
+
+        List<CartResponseDto> cartDTOs = cartMapper.toListResponseDTO(carts);
+
+        return ResponseEntity.ok(cartDTOs);
     }
 
     private CartEntity createCart() {

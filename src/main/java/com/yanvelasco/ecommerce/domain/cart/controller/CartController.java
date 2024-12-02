@@ -53,4 +53,13 @@ public class CartController {
     ) {
         return cartService.updateProductQuantityInCart(productId, operation.equalsIgnoreCase("delete") ? -1 : 1);
     }
+
+    @DeleteMapping("/carts/{cartId}/products/{productId}")
+    public ResponseEntity<String> deleteProductFromCart(
+            @PathVariable UUID cartId,
+            @PathVariable UUID productId
+    ) {
+        return cartService.deleteProductFromCart(cartId, productId);
+    }
+
 }

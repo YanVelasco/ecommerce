@@ -107,21 +107,29 @@ public class CartServiceImpl implements CartService {
                     + " less than or equal to the quantity " + product.getQuantity() + ".");
         }
 
-        if (quantity < 0) {
-            throw new QuantityException("Quantity must be positive");
-        }
-
         CartItemEntity cartItem = cartItemRepository.findCartItemByProductIdAndCartId(cartId, productId);
 
         if (cartItem == null) {
             throw new QuantityException("Product " + product.getName() + " not available in the cart!!!");
         }
 
-        cartItem.setProductPrice(product.getSpecialPrice());
-        cartItem.setQuantity(cartItem.getQuantity() + quantity);
-        cartItem.setDiscount(product.getDiscount());
-        cart.setTotalPrice(cart.getTotalPrice() + (cartItem.getProductPrice() * quantity));
-        cartRepository.save(cart);
+        // Calculate new quantity
+        int newQuantity = cartItem.getQuantity() + quantity;
+
+        if (newQuantity < 0) {
+            throw new QuantityException("The resulting quantity cannot be negative.");
+        }
+
+        if (newQuantity == 0) {
+            deleteProductFromCart(cartId, productId);
+        } else {
+            cartItem.setProductPrice(product.getSpecialPrice());
+            cartItem.setQuantity(newQuantity);
+            cartItem.setDiscount(product.getDiscount());
+            cart.setTotalPrice(cart.getTotalPrice() + (cartItem.getProductPrice() * quantity));
+            cartRepository.save(cart);
+        }
+
         CartItemEntity updatedItem = cartItemRepository.save(cartItem);
         if (updatedItem.getQuantity() == 0) {
             cartItemRepository.deleteById(updatedItem.getId());

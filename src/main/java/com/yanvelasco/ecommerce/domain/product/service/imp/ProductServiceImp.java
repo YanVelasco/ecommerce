@@ -1,7 +1,20 @@
 package com.yanvelasco.ecommerce.domain.product.service.imp;
 
-import java.util.UUID;
-
+import com.yanvelasco.ecommerce.domain.cart.dto.response.CartResponseDto;
+import com.yanvelasco.ecommerce.domain.cart.entities.CartEntity;
+import com.yanvelasco.ecommerce.domain.cart.mapper.CartMapper;
+import com.yanvelasco.ecommerce.domain.cart.repositories.CartRepository;
+import com.yanvelasco.ecommerce.domain.cart.service.CartService;
+import com.yanvelasco.ecommerce.domain.product.dto.request.ProductRequestDTO;
+import com.yanvelasco.ecommerce.domain.product.dto.response.PagedProductResponseDTO;
+import com.yanvelasco.ecommerce.domain.product.dto.response.ProductResponseDTO;
+import com.yanvelasco.ecommerce.domain.product.entity.ProductEntity;
+import com.yanvelasco.ecommerce.domain.product.mapper.ProductMapper;
+import com.yanvelasco.ecommerce.domain.product.repository.ProductRepository;
+import com.yanvelasco.ecommerce.domain.product.service.ProductService;
+import com.yanvelasco.ecommerce.exceptions.EmpytException;
+import com.yanvelasco.ecommerce.exceptions.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,25 +23,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.yanvelasco.ecommerce.exceptions.EmpytException;
-import com.yanvelasco.ecommerce.exceptions.ResourceNotFoundException;
-import com.yanvelasco.ecommerce.domain.product.dto.request.ProductRequestDTO;
-import com.yanvelasco.ecommerce.domain.product.dto.response.PagedProductResponseDTO;
-import com.yanvelasco.ecommerce.domain.product.dto.response.ProductResponseDTO;
-import com.yanvelasco.ecommerce.domain.product.entity.ProductEntity;
-import com.yanvelasco.ecommerce.domain.product.mapper.ProductMapper;
-import com.yanvelasco.ecommerce.domain.product.repository.ProductRepository;
-import com.yanvelasco.ecommerce.domain.product.service.ProductService;
-
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImp implements ProductService {
 
     private final ProductRepository productRepository;
-
+    private final CartRepository cartRepository;
     private final ProductMapper productMapper;
+    private final CartMapper cartMapper;
+    private final CartService cartService;
 
     @Override
     public ResponseEntity<ProductResponseDTO> createProduct(UUID categoryId, ProductRequestDTO productRequestDTO) {
@@ -99,33 +106,44 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public ResponseEntity<ProductResponseDTO> updateProduct(UUID productId, ProductRequestDTO productRequestDTO) {
-        ProductEntity productEntity = productRepository.findById(productId)
+        ProductEntity productFromDb = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", productId));
 
-        if (productRequestDTO.name() != null) {
-            productEntity.setName(productRequestDTO.name());
+        ProductEntity product = productMapper.toEntity(productRequestDTO, productFromDb.getId());
+
+        if (product.getName() != null) {
+            productFromDb.setName(product.getName());
+        }
+        if (product.getDescription() != null) {
+            productFromDb.setDescription(product.getDescription());
+        }
+        if (product.getQuantity() != null) {
+            productFromDb.setQuantity(product.getQuantity());
+        }
+        if (product.getDiscount() != null) {
+            productFromDb.setDiscount(product.getDiscount());
+        }
+        if (product.getPrice() != null) {
+            productFromDb.setPrice(product.getPrice());
+        }
+        if (product.getSpecialPrice() != null) {
+            productFromDb.setSpecialPrice(product.getSpecialPrice());
         }
 
-        if (productRequestDTO.description() != null) {
-            productEntity.setDescription(productRequestDTO.description());
-        }
+        ProductEntity savedProduct = productRepository.save(productFromDb);
 
-        if (productRequestDTO.quantity() != null) {
-            productEntity.setQuantity(productRequestDTO.quantity());
-        }
+        List<CartEntity> carts = cartRepository.findCartsByProductId(productId);
 
-        if (productRequestDTO.price() != null) {
-            productEntity.setPrice(productRequestDTO.price());
-        }
+        List<CartResponseDto> cartDTOs = carts.stream().map(cart -> {
+            List<ProductResponseDTO> products = cart.getCartItems().stream()
+                    .map(p -> productMapper.toResponseDTO(p.getProduct())).collect(Collectors.toList());
 
-        if (productRequestDTO.discount() != null) {
-            productEntity.setDiscount(productRequestDTO.discount());
-        }
+            return new CartResponseDto(cart.getId(), cart.getTotalPrice(), products);
+        }).toList();
 
-        productEntity.calculateSpecialPrice();
+        cartDTOs.forEach(cart -> cartService.updateProductInCarts(cart.id(), productId));
 
-        ProductEntity updatedProduct = productRepository.save(productEntity);
-        ProductResponseDTO responseDTO = productMapper.toResponseDTO(updatedProduct);
+        ProductResponseDTO responseDTO = productMapper.toResponseDTO(savedProduct);
 
         return ResponseEntity.ok(responseDTO);
     }
@@ -134,6 +152,10 @@ public class ProductServiceImp implements ProductService {
     public ResponseEntity<Void> deleteProduct(UUID productId) {
         ProductEntity productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", productId));
+
+        List<CartEntity> carts = cartRepository.findCartsByProductId(productId);
+
+        carts.forEach(cart -> cartService.deleteProductFromCart(cart.getId(), productId));
 
         productRepository.delete(productEntity);
 

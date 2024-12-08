@@ -7,9 +7,9 @@ import com.yanvelasco.ecommerce.domain.cart.mapper.CartMapper;
 import com.yanvelasco.ecommerce.domain.cart.repositories.CartItemRepository;
 import com.yanvelasco.ecommerce.domain.cart.repositories.CartRepository;
 import com.yanvelasco.ecommerce.domain.cart.service.CartService;
-import com.yanvelasco.ecommerce.domain.product.dto.response.ProductResponseDTO;
 import com.yanvelasco.ecommerce.domain.product.entity.ProductEntity;
 import com.yanvelasco.ecommerce.domain.product.repository.ProductRepository;
+import com.yanvelasco.ecommerce.exceptions.NotFoundException;
 import com.yanvelasco.ecommerce.exceptions.QuantityException;
 import com.yanvelasco.ecommerce.exceptions.ResourceNotFoundException;
 import com.yanvelasco.ecommerce.util.AuthUtil;
@@ -160,6 +160,32 @@ public class CartServiceImpl implements CartService {
         cartItemRepository.deleteCartItemByProductIdAndCartId(cartId, productId);
 
         return ResponseEntity.ok("Product deleted from cart");
+    }
+
+    @Override
+    public void updateProductInCarts(UUID cartId, UUID productId) {
+        CartEntity cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cart", "cartId", cartId));
+
+        ProductEntity product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+
+        CartItemEntity cartItem = cartItemRepository.findCartItemByProductIdAndCartId(cartId, productId);
+
+        if (cartItem == null) {
+            throw new NotFoundException("Product " + product.getName() + " not available in the cart!!!");
+        }
+
+        double cartPrice = cart.getTotalPrice()
+                - (cartItem.getProductPrice() * cartItem.getQuantity());
+
+        cartItem.setProductPrice(product.getSpecialPrice());
+
+        cart.setTotalPrice(cartPrice
+                + (cartItem.getProductPrice() * cartItem.getQuantity()));
+
+        cartItemRepository.save(cartItem);
+        cartRepository.save(cart);
     }
 
     private CartEntity createCart() {

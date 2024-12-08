@@ -2,6 +2,7 @@ package com.yanvelasco.ecommerce.domain.cart.repositories;
 
 import com.yanvelasco.ecommerce.domain.cart.entities.CartItemEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.UUID;
@@ -10,4 +11,8 @@ public interface CartItemRepository extends JpaRepository<CartItemEntity, UUID> 
 
     @Query("SELECT c FROM CartItemEntity c WHERE c.cart.id = :id AND c.product.id = :productId")
     CartItemEntity findCartItemByProductIdAndCartId(UUID id, UUID productId);
+
+    @Modifying
+    @Query("DELETE FROM CartItemEntity c WHERE c.cart.id = :cartId AND c.product.id = :productId")
+    void deleteCartItemByProductIdAndCartId(UUID cartId, UUID productId);
 }

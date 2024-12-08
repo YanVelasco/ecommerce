@@ -34,7 +34,6 @@ public class ProductServiceImp implements ProductService {
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
     private final ProductMapper productMapper;
-    private final CartMapper cartMapper;
     private final CartService cartService;
 
     @Override

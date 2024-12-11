@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AddressServiceImp implements AddressService {
 
@@ -29,5 +31,12 @@ public class AddressServiceImp implements AddressService {
         user.getAddresses().add(addressEntity);
         var response = addressMapper.toResponseDTO(addressEntity);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @Override
+    public ResponseEntity<List<AddressResponseDTO>> getAllAddressByUser(UserEntity user) {
+        List<AddressEntity> addresses = user.getAddresses();
+        List<AddressResponseDTO> response = addressMapper.toResponseListDTO(addresses);
+        return ResponseEntity.ok(response);
     }
 }

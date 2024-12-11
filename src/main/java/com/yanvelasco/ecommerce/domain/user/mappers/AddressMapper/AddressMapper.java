@@ -10,6 +10,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class AddressMapper {
 
@@ -17,6 +19,12 @@ public class AddressMapper {
 
     public AddressMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
+    }
+
+    public List<AddressResponseDTO> toResponseListDTO(List<AddressEntity> addresses) {
+        return addresses.stream()
+            .map(this::toResponseDTO)
+            .toList();
     }
 
     private final class ConverterImplementation implements Converter<AddressEntity, AddressResponseDTO> {

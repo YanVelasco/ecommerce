@@ -6,6 +6,10 @@ import com.yanvelasco.ecommerce.domain.user.entities.UserEntity;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface AddressService {
     ResponseEntity<AddressResponseDTO> createAddress(@Valid AddressRequestDTO addressRequestDto, UserEntity user);
+
+    ResponseEntity<List<AddressResponseDTO>> getAllAddressByUser(UserEntity user);
 }

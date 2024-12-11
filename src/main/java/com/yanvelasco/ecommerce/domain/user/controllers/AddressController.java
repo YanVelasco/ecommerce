@@ -3,7 +3,6 @@ package com.yanvelasco.ecommerce.domain.user.controllers;
 import com.yanvelasco.ecommerce.domain.user.dto.request.AddressRequestDTO;
 import com.yanvelasco.ecommerce.domain.user.dto.response.AddressResponseDTO;
 import com.yanvelasco.ecommerce.domain.user.entities.UserEntity;
-import com.yanvelasco.ecommerce.domain.user.repositories.AddressRepository;
 import com.yanvelasco.ecommerce.domain.user.services.AddressService;
 import com.yanvelasco.ecommerce.util.AuthUtil;
 import jakarta.validation.Valid;
@@ -11,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -34,6 +34,11 @@ public class AddressController {
     @GetMapping("/addresses")
     public ResponseEntity<List<AddressResponseDTO>> getAllAddress(){
         return addressService.getAllAddress();
+    }
+
+    @GetMapping("/addresses/{id}")
+    public ResponseEntity<AddressResponseDTO> getAddressById(@PathVariable UUID id){
+        return addressService.getAddressById(id);
     }
 
     @GetMapping("/addresses/user")

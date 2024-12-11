@@ -7,11 +7,13 @@ import com.yanvelasco.ecommerce.domain.user.entities.UserEntity;
 import com.yanvelasco.ecommerce.domain.user.mappers.AddressMapper;
 import com.yanvelasco.ecommerce.domain.user.repositories.AddressRepository;
 import com.yanvelasco.ecommerce.domain.user.services.AddressService;
+import com.yanvelasco.ecommerce.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AddressServiceImp implements AddressService {
@@ -37,6 +39,15 @@ public class AddressServiceImp implements AddressService {
     public ResponseEntity<List<AddressResponseDTO>> getAllAddress() {
         List<AddressEntity> addresses = addressRepository.findAll();
         List<AddressResponseDTO> response = addressMapper.toResponseListDTO(addresses);
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<AddressResponseDTO> getAddressById(UUID id) {
+        AddressEntity address = addressRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Address", "id", id)
+        );
+        AddressResponseDTO response = addressMapper.toResponseDTO(address);
         return ResponseEntity.ok(response);
     }
 

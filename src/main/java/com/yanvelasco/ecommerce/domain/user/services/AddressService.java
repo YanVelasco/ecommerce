@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface AddressService {
     ResponseEntity<AddressResponseDTO> createAddress(@Valid AddressRequestDTO addressRequestDto, UserEntity user);
@@ -14,4 +15,6 @@ public interface AddressService {
     ResponseEntity<List<AddressResponseDTO>> getAllAddressesByUser(UserEntity user);
 
     ResponseEntity<List<AddressResponseDTO>> getAllAddress();
+
+    ResponseEntity<AddressResponseDTO> getAddressById(UUID id);
 }

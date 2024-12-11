@@ -34,7 +34,14 @@ public class AddressServiceImp implements AddressService {
     }
 
     @Override
-    public ResponseEntity<List<AddressResponseDTO>> getAllAddressByUser(UserEntity user) {
+    public ResponseEntity<List<AddressResponseDTO>> getAllAddress() {
+        List<AddressEntity> addresses = addressRepository.findAll();
+        List<AddressResponseDTO> response = addressMapper.toResponseListDTO(addresses);
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<List<AddressResponseDTO>> getAllAddressesByUser(UserEntity user) {
         List<AddressEntity> addresses = user.getAddresses();
         List<AddressResponseDTO> response = addressMapper.toResponseListDTO(addresses);
         return ResponseEntity.ok(response);

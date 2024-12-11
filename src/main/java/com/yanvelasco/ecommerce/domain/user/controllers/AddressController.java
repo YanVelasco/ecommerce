@@ -24,17 +24,22 @@ public class AddressController {
         this.authUtil = authUtil;
     }
 
-    @PostMapping("/address")
+    @PostMapping("/addresses")
     public ResponseEntity<AddressResponseDTO> createAddress(@Valid @RequestBody
                                                             AddressRequestDTO addressRequestDto){
         UserEntity user = authUtil.loggedInUser();
         return addressService.createAddress(addressRequestDto, user);
     }
 
-    @GetMapping("/address")
+    @GetMapping("/addresses")
     public ResponseEntity<List<AddressResponseDTO>> getAllAddress(){
+        return addressService.getAllAddress();
+    }
+
+    @GetMapping("/addresses/user")
+    public ResponseEntity<List<AddressResponseDTO>> getAllAddressesByUser(){
         UserEntity user = authUtil.loggedInUser();
-        return addressService.getAllAddressByUser(user);
+        return addressService.getAllAddressesByUser(user);
     }
 
 }

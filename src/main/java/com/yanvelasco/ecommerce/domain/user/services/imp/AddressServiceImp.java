@@ -4,7 +4,7 @@ import com.yanvelasco.ecommerce.domain.user.dto.request.AddressRequestDTO;
 import com.yanvelasco.ecommerce.domain.user.dto.response.AddressResponseDTO;
 import com.yanvelasco.ecommerce.domain.user.entities.AddressEntity;
 import com.yanvelasco.ecommerce.domain.user.entities.UserEntity;
-import com.yanvelasco.ecommerce.domain.user.mappers.AddressMapper;
+import com.yanvelasco.ecommerce.domain.user.mappers.AddressMapper.AddressMapper;
 import com.yanvelasco.ecommerce.domain.user.repositories.AddressRepository;
 import com.yanvelasco.ecommerce.domain.user.services.AddressService;
 import com.yanvelasco.ecommerce.exceptions.ResourceNotFoundException;
@@ -57,4 +57,16 @@ public class AddressServiceImp implements AddressService {
         List<AddressResponseDTO> response = addressMapper.toResponseListDTO(addresses);
         return ResponseEntity.ok(response);
     }
+
+    @Override
+    public ResponseEntity<AddressResponseDTO> updateAddress(UUID id, AddressRequestDTO addressRequestDto, UserEntity user) {
+        AddressEntity address = addressRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Address", "id", id)
+        );
+        addressMapper.updateEntity(address, addressRequestDto);
+        addressRepository.save(address);
+        AddressResponseDTO response = addressMapper.toResponseDTO(address);
+        return ResponseEntity.ok(response);
+    }
+
 }

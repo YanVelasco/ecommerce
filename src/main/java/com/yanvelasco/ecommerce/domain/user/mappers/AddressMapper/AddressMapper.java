@@ -1,4 +1,4 @@
-package com.yanvelasco.ecommerce.domain.user.mappers;
+package com.yanvelasco.ecommerce.domain.user.mappers.AddressMapper;
 
 import com.yanvelasco.ecommerce.domain.user.dto.request.AddressRequestDTO;
 import com.yanvelasco.ecommerce.domain.user.dto.response.AddressResponseDTO;
@@ -27,6 +27,27 @@ public class AddressMapper {
             .toList();
     }
 
+    public void updateEntity(AddressEntity address, AddressRequestDTO addressRequestDto) {
+        if (addressRequestDto.street() != null) {
+            address.setStreet(addressRequestDto.street());
+        }
+        if (addressRequestDto.city() != null) {
+            address.setCity(addressRequestDto.city());
+        }
+        if (addressRequestDto.country() != null) {
+            address.setCountry(addressRequestDto.country());
+        }
+        if (addressRequestDto.zipCode() != null) {
+            address.setZipCode(addressRequestDto.zipCode());
+        }
+        if (addressRequestDto.state() != null) {
+            address.setState(addressRequestDto.state());
+        }
+        if (addressRequestDto.number() != null) {
+            address.setNumber(addressRequestDto.number());
+        }
+    }
+
     private final class ConverterImplementation implements Converter<AddressEntity, AddressResponseDTO> {
         @Override
         public AddressResponseDTO convert(MappingContext<AddressEntity, AddressResponseDTO> context) {
@@ -34,11 +55,11 @@ public class AddressMapper {
             return new AddressResponseDTO(
                 source.getId(),
                 source.getStreet(),
+                source.getNumber(),
                 source.getCity(),
-                source.getCountry(),
-                source.getZipCode(),
                 source.getState(),
-                source.getNumber()
+                source.getZipCode(),
+                source.getCountry()
             );
         }
     }
@@ -52,16 +73,24 @@ public class AddressMapper {
     public AddressEntity toEntity(AddressRequestDTO addressRequestDTO, UserEntity user) {
         AddressEntity entity = new AddressEntity();
         entity.setStreet(addressRequestDTO.street());
-        entity.setCity(addressRequestDTO.city());
-        entity.setCountry(addressRequestDTO.country());
-        entity.setZipCode(addressRequestDTO.zipCode());
-        entity.setState(addressRequestDTO.state());
         entity.setNumber(addressRequestDTO.number());
+        entity.setCity(addressRequestDTO.city());
+        entity.setState(addressRequestDTO.state());
+        entity.setZipCode(addressRequestDTO.zipCode());
+        entity.setCountry(addressRequestDTO.country());
         entity.setUser(user);
         return entity;
     }
 
     public AddressResponseDTO toResponseDTO(AddressEntity addressEntity) {
-        return modelMapper.map(addressEntity, AddressResponseDTO.class);
+        return new AddressResponseDTO(
+            addressEntity.getId(),
+            addressEntity.getStreet(),
+            addressEntity.getNumber(),
+            addressEntity.getCity(),
+            addressEntity.getState(),
+            addressEntity.getZipCode(),
+            addressEntity.getCountry()
+        );
     }
 }

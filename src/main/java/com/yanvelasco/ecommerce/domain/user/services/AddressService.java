@@ -19,4 +19,6 @@ public interface AddressService {
     ResponseEntity<AddressResponseDTO> getAddressById(UUID id);
 
     ResponseEntity<AddressResponseDTO> updateAddress(UUID id, @Valid AddressRequestDTO addressRequestDto, UserEntity user);
+
+    ResponseEntity<String> deleteAddress(UUID id, UserEntity user);
 }

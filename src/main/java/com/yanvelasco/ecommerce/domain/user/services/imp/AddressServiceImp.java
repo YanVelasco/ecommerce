@@ -69,4 +69,14 @@ public class AddressServiceImp implements AddressService {
         return ResponseEntity.ok(response);
     }
 
+    @Override
+    public ResponseEntity<String> deleteAddress(UUID id, UserEntity user) {
+        AddressEntity address = addressRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Address", "id", id)
+        );
+        user.getAddresses().remove(address);
+        addressRepository.delete(address);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Address deleted successfully");
+    }
+
 }

@@ -23,7 +23,6 @@ public class OrderEntity {
     @Setter(AccessLevel.NONE)
     private UUID id;
 
-    @Email(message = "Email should be valid")
     private String email;
 
     @OneToMany(mappedBy = "order", cascade=CascadeType.ALL, orphanRemoval = true)

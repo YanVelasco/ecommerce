@@ -23,8 +23,6 @@ public class PaymentEntity {
     @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL)
     private OrderEntity order;
 
-    @NotBlank
-    @Size(min = 4, message = "Payment method must be at least 4 characters")
     private String paymentMethod;
 
     private String pgPaymentId;

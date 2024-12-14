@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface CartRepository extends JpaRepository<CartEntity, UUID> {
@@ -17,4 +18,6 @@ public interface CartRepository extends JpaRepository<CartEntity, UUID> {
 
     @Query("SELECT c FROM CartEntity c JOIN FETCH c.cartItems ci JOIN FETCH ci.product p WHERE p.id = :productId")
     List<CartEntity> findCartsByProductId(UUID productId);
+
+    Optional<CartEntity> findByUserEmail(String emailId);
 }

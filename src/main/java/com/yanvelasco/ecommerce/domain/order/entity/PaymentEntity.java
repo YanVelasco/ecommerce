@@ -1,8 +1,6 @@
 package com.yanvelasco.ecommerce.domain.order.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.UUID;
@@ -33,4 +31,11 @@ public class PaymentEntity {
 
     private String pgName;
 
+    public PaymentEntity(String paymentMethod, String pgPaymentId, String pgPaymentStatus, String pgPaymentMessage, String pgName) {
+        this.paymentMethod = paymentMethod;
+        this.pgPaymentId = pgPaymentId;
+        this.pgPaymentStatus = pgPaymentStatus;
+        this.pgPaymentMessage = pgPaymentMessage;
+        this.pgName = pgName;
+    }
 }

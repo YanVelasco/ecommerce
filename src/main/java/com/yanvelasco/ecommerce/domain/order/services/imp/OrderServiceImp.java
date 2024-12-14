@@ -85,7 +85,7 @@ public class OrderServiceImp implements OrderService {
         cart.getCartItems().forEach(item -> {
             int quantity = item.getQuantity();
             ProductEntity product = item.getProduct();
-            product.setQuantity(product.getQuantity() - quantity);
+            product.setQuantity(product.getQuantity() - quantity); // Atualiza a quantidade em estoque
             productRepository.save(product);
             cartService.deleteProductFromCart(cart.getId(), item.getProduct().getId());
         });

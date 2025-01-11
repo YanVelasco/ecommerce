@@ -45,8 +45,7 @@ public class WebSecurityConfig {
             "/swagger-resources/configuration/ui",
             "/swagger-resources/configuration/security",
             "/api/auth/**",
-//            "/api/admin/**",
-//            "/api/public/**",
+            "/api/public/**",
             "/images/**",
             "/h2-console/**",
     };
@@ -96,7 +95,8 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public CommandLineRunner initData(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public CommandLineRunner initData(RoleRepository roleRepository, UserRepository userRepository,
+                                      PasswordEncoder passwordEncoder) {
         return args -> {
 
             // Retrieve Roles

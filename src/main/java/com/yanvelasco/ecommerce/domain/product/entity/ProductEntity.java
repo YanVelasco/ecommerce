@@ -52,7 +52,7 @@ public class ProductEntity {
 
     public void calculateSpecialPrice() {
         if (price != null && discount != null) {
-            this.specialPrice = price - (price * discount);
+            this.specialPrice = price - (price * (discount / 100));
         }
     }
 }

@@ -2,7 +2,6 @@ package com.yanvelasco.ecommerce.domain.product.service.imp;
 
 import com.yanvelasco.ecommerce.domain.cart.dto.response.CartResponseDto;
 import com.yanvelasco.ecommerce.domain.cart.entities.CartEntity;
-import com.yanvelasco.ecommerce.domain.cart.mapper.CartMapper;
 import com.yanvelasco.ecommerce.domain.cart.repositories.CartRepository;
 import com.yanvelasco.ecommerce.domain.cart.service.CartService;
 import com.yanvelasco.ecommerce.domain.product.dto.request.ProductRequestDTO;
@@ -19,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -45,13 +45,30 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ResponseEntity<PagedProductResponseDTO> getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+    public ResponseEntity<PagedProductResponseDTO> getAllProducts(Integer pageNumber, Integer pageSize, String sortBy
+            , String sortOrder, String keyword, String category) {
         Sort sortByAndOrderBy = sortOrder.equalsIgnoreCase("asc")
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sortByAndOrderBy);
-        Page<ProductEntity> productsPage = productRepository.findAll(pageable);
+
+        Specification<ProductEntity> specification = Specification.where(null);
+
+        if (keyword != null && !keyword.isEmpty()) {
+            specification = specification.and((root, query, criteriaBuilder) -> criteriaBuilder.or(
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + keyword.toLowerCase() + "%")
+            ));
+        }
+
+        if (category != null && !category.isEmpty()) {
+            specification = specification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(
+                    root.get("category").get("name"), category
+            ));
+        }
+
+
+        Page<ProductEntity> productsPage = productRepository.findAll(specification, pageable);
 
         if (productsPage.isEmpty()) {
             throw new EmpytException("No products found");
@@ -63,7 +80,9 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ResponseEntity<PagedProductResponseDTO> getProductsByCategory(UUID categoryId, int pageNumber, int pageSize, String sortBy, String sortOrder) throws ResourceNotFoundException {
+    public ResponseEntity<PagedProductResponseDTO> getProductsByCategory(UUID categoryId, int pageNumber,
+                                                                         int pageSize, String sortBy,
+                                                                         String sortOrder) throws ResourceNotFoundException {
 
         if (!productRepository.existsByCategoryId(categoryId)) {
             throw new ResourceNotFoundException("Category", "id", categoryId);
@@ -86,7 +105,8 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ResponseEntity<PagedProductResponseDTO> getProductsByKeyword(String keyword, int pageNumber, int pageSize, String sortBy, String sortOrder) {
+    public ResponseEntity<PagedProductResponseDTO> getProductsByKeyword(String keyword, int pageNumber, int pageSize,
+                                                                        String sortBy, String sortOrder) {
         Sort sortByAndOrderBy = sortOrder.equalsIgnoreCase("asc")
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();

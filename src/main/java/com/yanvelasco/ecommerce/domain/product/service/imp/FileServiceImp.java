@@ -62,7 +62,7 @@ public class FileServiceImp implements FileService {
 
         File folder = new File(path);
         if (!folder.exists()) {
-            folder.mkdir();
+            folder.mkdirs();
         }
 
         Files.copy(image.getInputStream(), Paths.get(filePath));

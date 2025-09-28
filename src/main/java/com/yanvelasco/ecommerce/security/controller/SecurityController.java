@@ -120,13 +120,13 @@ public class SecurityController {
     private ResponseEntity<UserInfoResponseDTO> getUserInfoResponseDTOResponseEntity(Authentication authentication) {
         UserDetailsIpm userDetails = (UserDetailsIpm) authentication.getPrincipal();
 
-        ResponseCookie jwtCookie = jwtUtils.generaResponseCookie(userDetails.getUsername());
-
         List<String> roles = new ArrayList<>();
         for (GrantedAuthority grantedAuthority : userDetails.getAuthorities()) {
             String authority = grantedAuthority.getAuthority();
             roles.add(authority);
         }
+
+        ResponseCookie jwtCookie = jwtUtils.generaResponseCookie(userDetails.getUsername(), roles);
 
         UserInfoResponseDTO loginResponseDTO = new UserInfoResponseDTO(userDetails.getId(), userDetails.getUsername(), jwtCookie.toString() ,roles);
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(loginResponseDTO);

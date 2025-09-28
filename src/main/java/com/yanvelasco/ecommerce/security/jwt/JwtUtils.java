@@ -18,6 +18,7 @@ import org.springframework.web.util.WebUtils;
 import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JwtUtils {
@@ -41,8 +42,8 @@ public class JwtUtils {
         }
     }
 
-    public ResponseCookie generaResponseCookie(String userName) {
-        String tokenJwt = generateTokenFromUsername(userName);
+    public ResponseCookie generaResponseCookie(String userName, List<String> roles) {
+        String tokenJwt = generateTokenFromUsername(userName, roles);
         return ResponseCookie.from(jwtCookie, tokenJwt)
                 .httpOnly(false)
                 .maxAge(jwtExpirationMs)
@@ -50,9 +51,10 @@ public class JwtUtils {
                 .build();
     }
 
-    public String generateTokenFromUsername(String username) {
+    public String generateTokenFromUsername(String username, List<String> roles) {
         return Jwts.builder()
                 .subject(username)
+                .claim("roles", roles)
                 .issuedAt(new Date())
                 .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key())

@@ -16,20 +16,5 @@ services:
       timeout: 3s
       retries: 5
 
-  ecommerce:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: ecommerce_app
-    ports:
-      - "8080:8080"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ecommerce_db
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: root
-
 volumes:
   postgres_data:

@@ -1,4 +1,4 @@
-# Multi-stage build otimizado para Payment Service
+# Multi-stage build otimizado para Indora-api
 FROM maven:3.9-eclipse-temurin-21-alpine AS build
 WORKDIR /app
 

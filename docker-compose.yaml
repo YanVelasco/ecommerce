@@ -16,5 +16,19 @@ services:
       timeout: 3s
       retries: 5
 
+  indora-api:
+    image: yanvelasco/indora-api:v1
+    container_name: indora-api
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/ecommerce_db"
+      SPRING_DATASOURCE_USERNAME: "postgres"
+      SPRING_DATASOURCE_PASSWORD: "root"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   postgres_data:
